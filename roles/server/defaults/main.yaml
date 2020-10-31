@@ -1,29 +1,13 @@
 ---
 apt_packages:
   - tmux
-  - vim
-  - git
-  - php
-  - libapache2-mod-php
-  - libmysqlclient-dev
-  - imagemagick
-  - libmagickwand-dev
-  - apache2
-  - libapache2-mod-passenger
-  - mysql-server
-  - mysql-client
-  - python-pymysql
-  - python-mysqldb
-
-app_db_host: "localhost"
-app_db_name: "fanDOK"
-app_db_user: "server"
-app_db_pass: "z1x2c3v4"
-
-
-app_repo: "https://github.com/redmine/redmine.git"
-app_home: /opt/redmine
-app_version: 4.0-stable
-
-app_lang: "ru"
-app_fqdn: redmine.plu.by
+  - vim 
+  - mosh 
+  - htop 
+  - git 
+  - curl 
+  - wget 
+  - unzip 
+  - zip
+  - tree
+  

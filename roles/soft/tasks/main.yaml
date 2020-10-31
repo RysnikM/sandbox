@@ -1,33 +1,9 @@
 ---
-- name: Update packages
-  shell:
-    cmd: apt update -y
-
 - name: Install packages
   apt:
     name: "{{ apt_packages }}"
     state: latest
     update_cache: yes
-
-- name: Add foldef for code
-  file: 
-    path: /code 
-    state: directory
-
-- name: Add foldef for jenkins
-  file: 
-    path: /jenkins 
-    state: directory
-  
-- name: Add any alias
-    shell:
-      cmd: echo "alias cls='clear'" >> ~/.bashrc
-
-
-- name: Add the user 'www'
-  user:
-    name: www
-    group: sudo
 
 # - name: MySQL. Install and setup
 #   template:
@@ -40,15 +16,15 @@
 
 # - meta: flush_handlers
 
-# - mysql_db:
-#     name: "{{ app_db_name }}"
-#     encoding: utf8
+- mysql_db:
+    name: "{{ app_db_name }}"
+    encoding: utf8
 
-# - mysql_user:
-#     name: "{{ app_db_user }}"
-#     password: "{{ app_db_pass }}"
-#     priv: "{{ app_db_name }}.*:ALL"
-#   no_log: "{{ hide_logs | default(True) }}"
+- mysql_user:
+    name: "{{ app_db_user }}"
+    password: "{{ app_db_pass }}"
+    priv: "{{ app_db_name }}.*:ALL"
+  no_log: "{{ hide_logs | default(True) }}"
 
 # - name: Redmine. Clone repository
 #   git:
