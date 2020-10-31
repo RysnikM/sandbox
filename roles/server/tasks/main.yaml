@@ -20,9 +20,8 @@
     state: directory
   
 - name: Add any alias
-    shell:
-      cmd: echo "alias cls='clear'" >> ~/.bashrc
-
+  shell:
+    cmd: echo "alias cls='clear'" >> ~/.bashrc
 
 - name: Add the user 'www'
   user:
