@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-with-Button.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+   
+</head>
+<body>
+
+<div class="team-clean">
+    <div id="croshki" aria-label="breadcrumb"></div>
+        <div class="container-fluid" style="margin-top:20px;">
+            <div class="row">
+                <div class="col-4  text-center" id="users"><img class="img-fluid" src="img/users.jpg" style="width:250px;">
+                    <h3 class="name"><br>Редактировать таблицу пользователей<br></h3>
+
+                </div>
+                <div class="col-4 text-center" id="oborudovanie"><img class="img-fluid" src="img/oborud.png" style="width:250px;">
+                    <h3 class="name"><br>Изменение списка обородувания<br></h3>
+
+                </div>
+                <div class="col-4 text-center" id="group"><img class="img-fluid" src="img/group.jpg" style="width:250px;">
+                    <h3 class="name"><br>изменение групп оборудования<br></h3>
+
+                </div>    
+                 <div class="row justify-content-center">
+                <div class="col-4 text-center" id="point"><img class="img-fluid" src="img/oee.png" style="width:250px;">
+                    <h3 class="name"><br>Изменение точек контроля вибрации<br></h3>
+                </div>    
+            </div>
+            </div>
+        </div>
+</div>
+<!-- <br>
+<div class="container-fluid" style="margin-top: 20px;">
+	<div class="row justify-content-left">
+ <div class="col-3">
+ <form>
+ <div class="form-group">
+ <div class="form-group input-group">
+ <select class="form-control">
+ <option>Станок 1</option>
+ <option>Пункт 2</option>
+ <option>Пункт 3</option>
+ </select>
+ <span class="input-group-btn">
+ <button type="button" class="btn btn-success btn-add">✚</button>
+ </span>
+ </div>
+ </div> 
+ </form>
+ </div>
+
+
+	</div>
+
+</div> -->
+
+
+    <script type="text/javascript">
+    	function drawStatusPerepheria(number){
+    		for (var i = 1; i < number+1; i++) {
+    			$("#IndicPeref").append('<svg width="31" height="25" ><rect id="IPph'+i+'" x="5" y="5" width="20" height="15" rx="2"fill="yellowgreen" stroke="green" stroke-width="1"><title>Состояние блока переферии '+i+'</title><rect></svg>')
+    		}
+     	}
+     	drawStatusPerepheria(12);
+		var arrayStatus=[1,0,1,0,1,0,1,0,1,0,1,0,1];
+
+    	function changeStatus(arrStatus,clGreen,brGreen,clRed,brRed) {
+    		if (arrStatus[0]) {
+    			$("#IPLC").attr('fill', clGreen);
+    			$("#IPLC").attr('stroke', brGreen);
+    		} else{
+    			$("#IPLC").attr('fill', clRed);
+    			$("#IPLC").attr('stroke', brRed);
+    		}
+    	
+    		for (var i = 1; (i < arrStatus.length) ; i++) {
+    		if (arrStatus[i]) {
+    			$("#IPph"+i).attr('fill', clGreen);
+    			$("#IPph"+i).attr('stroke', brGreen);
+    		} else {
+    			$("#IPph"+i).attr('fill', clRed);
+    			$("#IPph"+i).attr('stroke', brRed);
+    		}
+    		}
+    		}
+    	changeStatus(arrayStatus,'yellowgreen','green','orangered','red');
+
+    </script>
+
+<script>
+	 $(document).on('click', '.btn-add', function(event) {
+	 event.preventDefault();
+
+	 var field = $(this).closest('.form-group');
+	 var field_new = field.clone();
+
+	 $(this)
+	 .toggleClass('btn-success')
+	 .toggleClass('btn-add')
+	 .toggleClass('btn-danger')
+	 .toggleClass('btn-remove')
+	 .html('✖');
+
+	 field_new.find('input').val('');
+	 field_new.insertAfter(field);
+	 });
+
+	 $(document).on('click', '.btn-remove', function(event) {
+	 event.preventDefault();
+	 $(this).closest('.form-group').remove();
+	 });
+</script>
+<script>
+    //передача данных из php в html
+       var name = '<?php  echo($resJson); php?>';
+       console.log(name);
+    var arrName = JSON.parse(name);
+    $('#NameUser').html(arrName.name);
+      $('#PositionUser').html(arrName.position);
+//вывод хлбеных крошек на странице
+var croshki="<ol class='breadcrumb'>";
+$(arrName.path).each(function(a,b){
+ croshki=croshki+" "+"<li class='breadcrumb-item'><a href='"+b.path+"'>"+b.name+"</a></li>";
+});
+croshki=croshki+"</ol>"
+$("#croshki").html(croshki);
+
+      // логаут пользователя
+    function logout(){
+$.ajax({
+    type: "GET",
+    url: "/phpmodule/sessuser.php?name=logout",
+  success: function(msg){
+location.href="/index.php";
+  }
+ });        
+
+    }
+$("#oborudovanie").click(function(){
+location.href="oborudovanie/index.php";
+});
+$("#users").click(function(){
+location.href="users/index.php";
+});
+$("#group").click(function(){
+location.href="group/index.php";
+});
+$("#point").click(function(){
+location.href="point/index.php";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DOtchet</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <link rel="stylesheet" href="assets/css/datatables.min.css">
+</head>
+
+<body>
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/3d"><span>3D сканер</span></a></li>
+        <li class="breadcrumb-item active"><span>Отчеты</span></li>
+    </ol>
+    <div>
+        <ul class="nav nav-tabs nav-fill mb-2">
+            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Выбор данных</a></li>
+            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Отчет</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="container-fluid">
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Вывести данные&nbsp;</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center align-self-center mb-1 mt-1"><span>С &nbsp; &nbsp;&nbsp;</span><input id="startperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center mb-1 mt-1"><span>по &nbsp;&nbsp;</span><input id="endperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-6"><button class="btn btn-primary btn-block btn-lg btn-rounded" type="button" onclick="addselect(this)" id="showVibroCharts">Создать отчет</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane " role="tabpanel" id="tab-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12" id="otchetTableLost"><table id="tableid" class="table table-bordered table-sm table-hover text-center" cellspacing="0" width="100%">
+  
+	<thead>
+    <tr>
+       <th class="th-sm">ID бревна</th>
+		
+      <th class="th-sm">Входной диаметр, см</th>
+      <th class="th-sm">Выходной диаметр, см</th>
+      <th class="th-sm">Средний диаметр, см</th>
+	  <th class="th-sm">Общий объём, м<sup>3</sup></th>
+      <th class="th-sm">Полезный объем, м<sup>3</sup></th>
+		<th class="th-sm">Время операции</th>
+	      </tr>
+  </thead>
+  <tbody id="bodytable">
+	</tbody>
+  <tfoot>
+    <tr>
+       <th>ID бревна</th>
+
+      <th colspan='3'>Диаметры, м</th>
+		 <th colspan="2">Объёмы, м<sup>3</sup></th>
+			<th colspan="1">Время проведения операций</th>
+
+      </tr>
+  </tfoot>
+</table></div>
+<div style=" width: 100%;">
+  Количество чураков ща период - <text id="countWood">ожидайте загрузки данных</text>
+  <br>
+  Суммарный общий объем за период - <text id="SumVolume">ожидайте загрузки данных</text>
+  <br> 
+  Суммарный полезны объем за период - <text id="usefulVolume">ожидайте загрузки данных</text>
+  
+</div>
+
+<div id='prostoidr'></div><div id='prostoidr1'></div><div id='prostoidr2'></div>
+<div id='prostoidr3'></div><div id='prostoidr4'></div><div id='prostoidr5'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:84px;"></div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/tooltip.js"></script>
+    <script src="assets/js/moment-with-locales.js"></script>
+    
+    <script src="assets/js/datatables.min.js"></script>
+    <script src="assets/js/btn.js"></script>
+    
+    <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/all.min.js"></script>
+</body>
+
+</html>
+
+<script type="text/javascript">
+	  var day =moment().format('YYYY-MM-DD');
+var time =moment().format('HH:mm');
+var timeday=day+"T"+time;
+var year = moment().format('YYYY');
+  document.getElementById("startperiod").value=year+"-01-01T00:00";
+document.getElementById("endperiod").value=timeday;
+
+var msg;
+
+function addselect(event) {
+  var arrsel=[];
+
+
+  var q; 
+
+
+ var b = Date.parse($("#startperiod").val());
+ b=b/1000;
+zapros+="&start="+b;
+ var a = Date.parse($("#endperiod").val());
+a=a/1000;
+  var zapros="?startperiod="+b+"&endperiod="+a;
+
+
+$.ajax({
+    type: "GET",
+    url: "index.php"+zapros,
+
+  success: function(msg1){
+    console.log(msg1);
+ msg = JSON.parse(msg1);
+ $("#countWood").html(msg.countWood+" шт.");
+ $("#SumVolume").html(msg.sumVal+" м3");
+ $("#usefulVolume").html(msg.usefulVolume+" м3");
+     if( msg.data==null || !msg.data ){alert("В выбранном периоде нет данных"); return;}
+var tables="";
+//  tables+='<table class="table table-bordered table-sm table-hover text-center VibroTable" cellspacing="0" width="100%">\
+// <thead>\
+//     <tr>\
+//        <th class="th-sm">ID бревна</th>\
+//       <th class="th-sm">Входной диаметр, м</th>\
+//       <th class="th-sm">Выходной диаметр, м</th>\
+//       <th class="th-sm">Средний диаметр, м</th>\
+//       <th class="th-sm">Длина бревна, м</th>\
+// 	  <th class="th-sm">Общий объём, м<sup>3</sup></th>\
+//       <th class="th-sm">Полезный объем, м<sup>3</sup></th>\
+// 			<th class="th-sm">Время  сканирования</th>\
+// 	      </tr>\
+//   </thead>\
+//   <tbody id="obor">';
+
+    $.each(msg.data,function(a,b){
+         console.log(b);
+tables+=' <tr><th>'+b.id+'</th><th>'+parseInt(b.inputRad,10).toFixed(2)+'</th><th>'+parseInt(b.outputRad,10).toFixed(2)+'</th><th>'+parseInt(b.avrRad,10).toFixed(2)+'</th><th>'+b.volume+' м<sup>3</sup></th><th>'+b.usefulVolume+' м<sup>3</sup></th><th>'+moment(b.timeStamp*1000).format('YYYY-MM-DD HH:mm');+'</th></tr>';
+
+
+      });
+
+   //    tables+='  </tbody><tfoot><tr><th>ID бревна</th>\
+   //    <th colspan="3">Диаметры, м</th> <th colspan="1">Длины, м</th>\
+		 // <th colspan="2">Объёмы, м<sup>3</sup></th>\
+   //    		<th colspan="1">Время проведения операций</th>\
+   //    </tr></tfoot></table>';
+$("#bodytable").html(tables);
+$('#tableid').DataTable();
+//$('#VibroTable2').DataTable();
+$('.dataTables_length').addClass('bs-select');
+DrawProstoi(msg.procVatD,msg.procD,"Входной диаметр","prostoidr","Процент диаметров проходящей древесины");
+DrawProstoi(msg.procVatD,msg.outputProc,"Выходной диаметр","prostoidr1","Процент диаметров проходящей древесины");
+DrawProstoi(msg.procVatD,msg.avrRad,"Средний диаметр","prostoidr2","Процент диаметров проходящей древесины");
+DrawProstoi(msg.valueWoodCad,msg.valueWood,"Объем","prostoidr3","Объемы проходящей древесины");
+DrawProstoi(msg.valueWoodCad,msg.valueWoodUseful,"Полезный объем","prostoidr4","Полезный объемы проходящей древесины");
+DrawProstoi(msg.curvatureCad,msg.curvature,"Кривизна","prostoidr5","Кривизна проходящей древесины");
+}});
+
+}
+
+  moment.locale("ru");
+  Highcharts.setOptions({
+            lang: {
+                loading: 'Загрузка...',
+                months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                shortMonths: ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек']
+            }
+          });
+  
+
+var sw=0;
+var chPr;
+function DrawProstoi(cat,data,name,div,text){
+  console.log(cat);
+ chPr =  Highcharts.chart(div, {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: name
+    },
+    subtitle: {
+        text: text
+    },
+    xAxis: {
+        categories: cat,
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ' %'
+        }
+    },
+    credits: {
+      enabled: false
+  },
+  legend: {
+        enabled: false,
+        borderWidth: 0
+    },
+    tooltip: {
+        
+        pointFormat: '{point.y:.1f} %',
+      },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        
+        data: data
+
+    }]
+});
+ chPr.setSize(500, 500);
+}
+
+
+</script>
+<style type="text/css">
+    table { page-break-inside:auto }
+    div   { page-break-inside:avoid; } /* This is the key */
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+</style>

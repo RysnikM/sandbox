@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vibroSetStanok</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="../index.php"><span>Вибрация</span></a></li>
+        <li class="breadcrumb-item active"><span>ОНЛАЙН - Выбор станка</span></li>
+    </ol>
+    <div>
+        <ul class="nav nav-tabs nav-fill mb-2">
+            <?php foreach($group as $key => $value){ ?>
+            <li class="nav-item    "><a class="nav-link <?php if($key===0){?> active <?php } ?>" role="tab" data-toggle="tab" href="#tab-<?php echo $value['id'];?>" style='text-transform: uppercase;' style="font-size:18px;"><?php echo $value['name'];?></a></li><?php } ?>
+            
+        </ul>
+        <div class="tab-content">
+
+
+
+
+
+                        <?php foreach($group_o as $key => $val){  ?>
+
+            <div class="tab-pane  <?php if($key==0){?>fade show active<?php }else{ ?>fade<?php } ?>" role="tabpanel" id="tab-<?php echo $val['id'];?>">
+                <div class="container-fluid">
+                    <div class="row d-flex flex-fill justify-content-start m-auto">
+
+
+ <?php foreach($val['obor'] as $key2 => $val2){  ?>
+                        <div class="col-auto col-sm-auto col-md-4 col-lg-3 d-flex flex-fill justify-content-center border border-info mb-1 mt-1">
+                            <div class="row justify-content-between">
+                              <a href="vibroOnline/index.php?id=<?php echo $val2['id'];?>">  <div class="col-12 d-flex flex-fill justify-content-center"><span><?php echo $val2['name'];?> </span></div></a>
+                                <div class="col-12 d-flex flex-fill justify-content-center">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3" style="font-size:14px;">Узел</th>
+                                                    <th style="font-size:14px;">Online</th>
+                                                    <th style="font-size:14px;">Max</th>
+                                                    <th>Ср.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                  <?php foreach($val2['points'] as $key1 => $val1){  ?>
+                                                <tr>
+                                                    <td colspan="3"> <?php echo $val1['name'];?> </td>
+                                                    <td style="background-color:  <?php if($val1['granica_mess']<=$val1['onlinevalue'] &&  $val1['granica_alarm']>=$val1['onlinevalue']){echo('#ffff006b');}elseif($val1['granica_alarm']<=$val1['onlinevalue']){echo('#ff000091');}else{echo('#0000ff26');} ?>"><?php echo $val1['onlinevalue'];?></td>
+                                                    <td><?php echo $val1['maxval'];?></td>
+                                                    <td><?php echo round($val1['avg'],1);?></td>
+                                                </tr>
+                                                    <?php } ?>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+     <!--                            <div class="col-12 d-flex flex-fill justify-content-center">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3" style="font-size:14px;">OEE</th>
+                                                    <th style="font-size:14px;">A %</th>
+                                                    <th style="font-size:14px;">B %</th>
+                                                    <th>C %</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="3"><?php echo $val2['oee']['OEE'];?></td>
+                                                    <td><?php echo $val2['oee']['A'];?></td>
+                                                    <td><?php echo $val2['oee']['P'];?></td>
+                                                    <td><?php echo $val2['oee']['Q'];?></td>
+                                                </tr>
+                                                <tr></tr>
+                                                <tr></tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+ <?php } ?>
+        </div>
+    </div>
+</div>
+
+ <?php } ?>
+
+
+                    </div>
+               
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:100px;"></div>
+    </div>
+   
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/all.min.js"></script>
+    <script src="assets/js/tooltip.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+
+<head >
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ФанДОК</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+      <script type="text/javascript" src="/assets/js/moment-with-locales.js"></script>
+    <link rel="stylesheet" href="/assets/css/gauge.css">
+     
+                          <script src="/js/jq.js"></script>
+                            <script src="/js/tooltip.js"></script>
+   <link rel="stylesheet" href="/assets/css/animate.min.css">
+</head>
+
+<body>
+    <div class="container-fluid  d-print-none" id="headerID" style="border-bottom:1px solid black;">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2 justify-content-center align-items-center align-content-center align-self-center m-auto"><img  class="rounded img-fluid d-flex flex-shrink-0 flex-fill flex-wrap m-auto" src="/assets/img/logo.png" alt="АСТ-эксперт" style="margin:0px;margin-left:22px;padding-right:auto;"></div>
+            <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-8 d-flex flex-grow-1 align-items-center align-content-center align-self-center">
+                <div class="table-responsive table-bordered" id="tableID" style="height:136px;">
+                    <table class="table table-striped table-bordered table-sm">
+                        <tbody id="messages_err">
+                            <tr>
+                                <td colspan="12">Сообщение 1</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">Сообщение 2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div  class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-2">
+                <div class="row d-flex flex-fill justify-content-between">
+                    <div class="col-12 col-xl-auto d-flex flex-fill justify-content-center mt-2 mb-2"><span class="text-monospace font-weight-bold" id="timesever" style="font-size:20px;">Серверное время</span></div>
+                    <div class="col-12 d-flex flex-fill justify-content-center align-items-center mb-2" style="font-size:20px;"><span id="UserID" class="font-weight-bold cyan-text"><?php echo("$name")?></span></div>
+                    <div class="col-12 d-flex flex-fill justify-content-center align-items-center mb-1"><button class="btn btn-primary btn-block btn-rounded" type="button" onclick="logout();" id="LogoutID">Выйти</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        moment.locale("ru");
+              // логаут пользователя
+    function logout(){
+$.ajax({
+    type: "GET",
+    url: "/phpmodule/sessuser.php?name=logout",
+  success: function(msg){
+location.href="/index.php";
+  }
+ });   }
+
+function messages(){
+$.ajax({
+    type: "GET",
+    url: "/messages.php?get=1",
+  success: function(msg){
+    var arrmessages = JSON.parse(msg);
+    var err="";
+
+$(arrmessages).each(function(a,b){
+ err=err+" <tr> <td colspan='12'><a href='"+b.href+"'>"+b.name+" : "+b.text+"  || время  :"+moment(b.time*1000).format('DD:MM:YYYY H:mm:ss')+"</a></td> </tr>";  
+});
+$("#messages_err").html(err);
+//$("#timesever").html(moment(arrmessages.time*1000).format('H:mm:ss'));
+  }
+});
+}
+var resive;
+function times(){
+$.ajax({
+    type: "GET",
+    url: "/messages.php?time=1",
+  success: function(msg){
+     resive = JSON.parse(msg);
+$("#timesever").html(moment(resive.time*1000).format('H:mm:ss'));
+  }
+});
+}
+
+$(document).ready(function () {
+    messages();
+    times();
+   // connection12();
+    setInterval(function() {
+  messages();
+}, 1000);
+      setInterval(function() {
+  times();
+}, 1000);
+
+});
+function connection12(){
+var id,id1;
+
+$.each(resive.status,function(a,b){
+    id="#block"+b.number+"_pere";
+      id1="#block"+b.number+"_style";
+      $( id ).attr( "data-original-title",b.name );
+    if(Number(b.status)===1){
+     $( id1 ).css( "color","green" ); 
+    }else{
+
+    $( id1 ).css( "color","red" );   
+    }
+});
+
+    }
+$("#block1_pere").click(function(){
+
+    
+
+});
+
+
+$(document).ready(function () {
+            setInterval(function() {
+  connection12();
+}, 5000);
+});
+
+
+
+
+    </script>
+ 
+<div class="d-none d-print-block">
+    <h1 >Отчет №_____________</h1>
+</div>

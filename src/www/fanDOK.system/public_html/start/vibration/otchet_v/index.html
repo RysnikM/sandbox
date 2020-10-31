@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibroOtchet</title>
+
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <link rel="stylesheet" href="assets/css/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  
+<div class="modal fade" id="preload" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Изменение комментария</h4>
+        </div>
+        <div class="d-flex justify-content-center">
+        <div class="modal-body">
+           <div class="spinner-grow" role="status">
+  <span class="sr-only">Loading...</span>
+</div></div>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href=""><span>Вибрация</span></a></li>
+        <li class="breadcrumb-item active"><span>Отчеты</span></li>
+    </ol>
+    <div>
+        <ul class="nav nav-tabs nav-fill mb-2">
+            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Выбор данных</a></li>
+            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Отчет</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="container-fluid">
+                    <div class="row justify-content-center align-items-center m-auto">
+                        <div class="col-auto d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center mt-4">
+                            <div class="form-group flex-fill">
+                                <div class="form-group input-group">
+
+                                  <select id="spisoktoch" class="form-control-lg d-flex flex-fill m-auto data-select">
+
+                                </select>
+
+                                    <span
+                                        class="input-group-btn"><button class="btn btn-success btn-lg btn btn-success btn-block btn-add ml-1 btn-rounded" type="button">✚</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Вывести данные&nbsp;</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center align-self-center mb-1 mt-1"><span>С &nbsp; &nbsp;&nbsp;</span><input id="startperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center mb-1 mt-1"><span>по &nbsp;&nbsp;</span><input id="endperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Период средней выборки в минутах</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center mb-1 mt-1"><input id="count" class="justify-content-center text-center" type="number" placeholder="Введите время"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-6"><button class="btn btn-primary btn-block btn-lg btn-rounded" type="button" onclick="addselect(event);" id="showVibroCharts">Создать отчет</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div  class="col-12" id="otchetTableLost">
+                            <h3 class="text-center">Цех 1 - Станок ХХ</h3><table class="table table-bordered table-sm table-hover text-center VibroTable" cellspacing="0" width="100%">
+
+	 <thead>
+    <tr>
+      <th class="th-sm">Узел</th>
+      <th class="th-sm">Состояние</th>
+      <th class="th-sm">Максимальная</th>
+      <th class="th-sm">Минимальная</th>
+      <th class="th-sm">Средняя</th>
+	  <th class="th-sm">Предупреждение</th>
+      <th class="th-sm">Авария</th>
+	  <th class="th-sm">Последнее изменение уставки</th>	
+      </tr>
+  </thead>
+  <tbody id="otchet">
+    <tr class='table-warning'>
+      <td>Tiger Nixon</td>
+      <td>System Architect</td>
+      <td>Edinburgh</td>
+      <td>61</td>
+      <td>2011/04/25</td>
+		<td>Accountant</td>
+      <td>Tokyo</td>
+      <td>63</td>
+      <td>2011/07/25</td>
+    </tr>
+    <tr class='table-danger'>
+      <td>Garrett Winters</td>
+      <td>Accountant</td>
+      <td>Tokyo</td>
+      <td>63</td>
+      <td>2011/07/25</td>
+		<td>Accountant</td>
+      <td>Tokyo</td>
+      <td>63</td>
+      <td>2011/07/25</td>
+	  </tr>
+    <tr>
+      <td>Ashton Cox</td>
+      <td>Junior Technical Author</td>
+      <td>San Francisco</td>
+      <td>66</td>
+      <td>2009/01/12</td>
+		<td>Accountant</td>
+      <td>Tokyo</td>
+      <td>63</td>
+      <td>2011/07/25</td>
+     
+    </tr>
+    <tr class='table-danger'>
+      <td>Cedric Kelly</td>
+      <td>Senior Javascript Developer</td>
+      <td>Edinburgh</td>
+      <td>22</td>
+      <td>2012/03/29</td>
+		<td>Accountant</td>
+      <td>Tokyo</td>
+      <td>63</td>
+      <td>2011/07/25</td>
+      
+    </tr>
+
+  </tbody>
+  <tfoot>
+    <tr>
+       <th>Узел</th>
+      <th>Состояние</th>
+      <th colspan="3">Текущие величины</th>
+	  <th colspan="2">Текущие уставки</th>
+	  <th>Последнее изменение уставки</th>
+      </tr>
+  </tfoot>
+</table></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:84px;"></div>
+    </div>
+
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+var $loading = $('#preload').hide();
+$(document)
+  .ajaxStart(function () {
+
+  })
+  .ajaxStop(function () {
+   $('#preload').modal('hide');
+  });
+
+
+
+  var day =moment().format('YYYY-MM-DD');
+var time =moment().format('HH:mm');
+var timeday=day+"T"+time;
+var year = moment().format('YYYY');
+  document.getElementById("startperiod").value=year+"-01-01T00:00";
+document.getElementById("endperiod").value=timeday;
+           //передача данных из php в html
+       var name = '<?php  echo($resJson); ?>';
+    var arrName = JSON.parse(name);
+      var opt = '<?php  echo($resquery); ?>';
+    var arropt = JSON.parse(opt);
+    $('#UserID').html(arrName.name);
+      $('#PositionUser').html(arrName.position);
+
+var tablestr=[];
+//вывод списка
+var spisoktoch="";
+$(arropt).each(function(a,b){
+ spisoktoch=spisoktoch+"<optgroup label='"+b.name+"'>";
+$(b.obor).each(function(a1,b1){
+// spisoktoch=spisoktoch+"<option value="b1.id" selected="">"b1.name"</option>";  
+$(b1.point).each(function(a2,b2){
+    if(b2.name){
+ spisoktoch=spisoktoch+"<option class='qq' value-parentobor='"+b1.code+"' value-idgroup='"+b.id+"'  value-idobor='"+b1.id+"' value-idpoint='"+b2.id+"' value='"+b2.tablename+"' selected=''>"+b2.name+"."+b1.name+"</option>";  
+}
+});
+});     
+});
+
+spisoktoch=spisoktoch+"";
+$("#spisoktoch").html(spisoktoch);
+function addselect(event) {
+  var arrsel=[];
+  var arrgroup=[];
+  var periodinterval=$("#periodinterval").val();
+  var zapros="?tables=";
+  var q; var q1; var q2; var q3; var q4;
+$(".qq:selected").each(function(){
+   q = $(this).attr("value");
+   q1 = $(this).attr("value-idpoint");
+   q2 = $(this).attr("value-idobor");
+   q3 = $(this).attr("value-idgroup");
+   q4 = $(this).attr("value-parentobor");
+ arrsel.push({"tablename":q,"idpoint":q1,"idobor":q2,"parentobor":q4});
+ arrgroup.push({"idgroup":q3});
+});
+
+arrsel.pop();
+arrgroup.pop();
+  var i=0;
+$.each(arrsel,function(a,b){
+zapros+=b.idpoint+"|||";
+ i++;
+});
+ var b = Date.parse($("#startperiod").val());
+ b=b/1000;
+zapros+="&start="+b;
+ var a = Date.parse($("#endperiod").val());
+a=a/1000;
+zapros+="&end="+a;
+zapros+="&count="+$("#count").val();
+    console.log(zapros);
+    zapros="?tables=13|||11|||14|||&start=1076740000&end=3043947600&count=3";
+    var tablestart='';
+       var tableend='';
+// var tablestr='';
+ alert("asddoajax");
+$.ajax({
+    type: "GET",
+    url: "ajax.php"+zapros,
+    ajaxSend : function(){
+          alert("asd");
+    //$('#preload').modal('show');
+    },
+  success: function(msg){
+    var arrmessages = JSON.parse(msg);
+
+var result = Object.keys(arrmessages.data).map(function(key) {
+console.log(arrmessages.data[key]);
+return arrmessages.data[key];
+});
+
+  var tables="";
+// const obor= [... new Set(result.map(x=>x.oborudovanieName)) ];
+
+const obor = [];
+const map = new Map();
+for (const item of result) {
+    if(!map.has(item.oborudovanieId)){
+        map.set(item.oborudovanieId, true);    // set any value to Map
+        obor.push({
+            id: item.oborudovanieId,
+            name: item.oborudovanieName
+        });
+    }
+}
+
+
+
+
+console.log(obor);
+$.each(obor,function(a,b){
+
+        tables+=' <div class="col-12" id="otchetTableLost"><h3 class="text-center">'+b.name+'</h3><table class="table table-bordered table-sm table-hover text-center VibroTable" cellspacing="0" width="100%"><thead><tr><th class="th-sm">Узел</th><th class="th-sm">Состояние</th><th class="th-sm">Максимальная</th><th class="th-sm">Минимальная</th><th class="th-sm">Средняя</th><th class="th-sm">Предупреждение</th><th class="th-sm">Авария</th><th class="th-sm">Последнее изменение уставки</th>  </tr></thead><tbody id="otchet'+b.id+'">';
+        tables+='</tbody><tfoot><tr><th>Узел</th><th>Состояние</th><th colspan="3">Текущие величины</th><th colspan="2">Текущие уставки</th><th>Последнее изменение уставки</th></tr></tfoot></table></div>';
+        $("#otchettab").html(tables);
+
+});
+
+$.each(arrmessages.data,function(a1,b1){
+var styl="";
+if(tablestr[b1.oborudovanieId]===undefined){tablestr[b1.oborudovanieId]="";}
+
+ if(+b1.real>= +b1.alarm){var styl="class='table-danger'";}else if(+b1.real< +b1.alarm && +b1.real>=b1.mess ){var styl="class='table-warning'";}else{styl="";}
+tablestr[b1.oborudovanieId]+="<tr "+styl+">\
+<td>"+b1.pointName+"</td>\
+<td>"+b1.real+"</td>\
+<td>"+b1.max+"</td>\
+<td>"+b1.min+"</td>\
+<td>"+b1.avg+"</td>\
+<td>"+b1.mess+"</td>\
+<td>"+b1.alarm+"</td>\
+<td>"+moment(b1.timechange*1000).format('lll')+"</td></tr>";
+//moment(b1.timechange*1000).format('lll')
+});
+
+tablestr.forEach(function(item, i, arr) {
+  var e="#otchet"+i;
+  $(e).html(item);
+});
+
+//$("#otchetluschilka1").html(tablestr["luschilka1"]);
+
+  }
+
+});
+
+}
+ var valLevelArr=arrmessages.LevelArr;
+  var stanokArr=arrmessages.stanokArr;
+   var nameArr=arrmessages.nameArr;
+   var levelArr=arrmessages.levelArr;
+   var commonArr=arrmessages.cammArr;
+</script>
+
+
+
+    <!---<script src="assets/js/jquery.min.js"></script> -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/tooltip.js"></script>
+    <script src="assets/js/moment-with-locales.js"></script>
+    <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/btn.js"></script>
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/all.min.js"></script>
+    <script src="assets/js/datatables.min.js"></script>
+    <script src="assets/js/VibrochartColumn.js"></script>

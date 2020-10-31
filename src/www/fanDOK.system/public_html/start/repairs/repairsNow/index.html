@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DOtchet</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <link rel="stylesheet" href="assets/css/datatables.min.css">
+
+</head>
+
+<body>
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/repairs"><span>Ремонтные работы</span></a></li>
+        <li class="breadcrumb-item active"><span>Заполнение журнала</span></li>
+    </ol>
+    <div>
+
+        <div class="tab-content">
+
+            <div class="tab-pane active" role="tabpanel" id="tab-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12" id="otchetTableLost">
+
+
+                          <form class="needs-validation">
+
+
+<div id="update"></div>
+   <div class="form-group row">
+    <label for="oborudovanie" class="col-sm-2 col-form-label">Выберите оборудование</label>
+      <div class="col-sm-10">
+    <select id="selOb" onchange="getGroup(this);" name="oborudovanie" class="browser-default form-control" >
+      <option selected disabled>Выберите оборудование</option >
+  <?php foreach($oborudovanie as $val){ ?>  <option id="aa<?php echo($val['id']); ?>" data-value="<?php echo($val['id']); ?>" data-grup="<?php echo($val['groupOborG']); ?>" value="<?php echo($val['name']); ?>"><?php echo($val['name']); ?></option><?php } ?>
+    </select>
+  </div> </div>
+
+  <div class="form-group row">
+    <label for="prihina" class="col-sm-2 col-form-label">Узел, вышедший из строя</label>
+    <div id="insertDivSelect" class="col-sm-10">
+      <input type="text" class="form-control" name="uzel" placeholder="Узел (агрегат)" required>
+    </div>
+     <label style="display: none;" id="secLevFor" class="col-sm-2 col-form-label">Выберите следующий уровень</label>
+    <div class="form-group col-sm-10" id="forseclevel"></div>
+   
+    <div class="form-group col-sm-10" id="forserdlevel"></div>
+  </div>
+<div class="form-group row">
+  <label for="example-datetime-local-input" class="col-sm-2 col-form-label">Начало ремонта</label>
+  <div class="col-sm-10">
+    <input class="form-control" type="datetime-local" id="strtime"  name="startTime" required>
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-datetime-local-input" class="col-sm-2 col-form-label">Окончание ремонта</label>
+  <div class="col-sm-10">
+    <input class="form-control" type="datetime-local" id="endtim" name="endTime" required>
+  </div>
+</div>
+  <div class="form-group row">
+    <label for="prihina" class="col-sm-2 col-form-label">Причина ремонта</label>
+    <div class="col-sm-10">
+      <textarea id="prichina"  class="form-control" name="prihina" placeholder="Причина ремонта" required></textarea>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Название детали вышедшей из строя</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="detalName" placeholder="деталь" required>
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Заказной код детали вышедшей из строя</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="CodeDetail" placeholder="введите заказной код (номер детали)">
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Название детали установленной взамен</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="detalNameInsrt" placeholder="деталь" required>
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Заказной код детали установленной взамен</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="CodeDetailInsert" placeholder="введите заказной код (номер детали)">
+    </div>
+  </div>
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Тип ремонта</legend>
+      <div class="col-sm-10">
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="remont" id="plan" value="1" checked>
+  <label class="form-check-label" for="plan">
+    Плановый ремонт
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="remont" id="avaria" value="2">
+  <label class="form-check-label" for="avaria">
+    Аварийный ремонт
+  </label>
+</div>
+      </div>
+    </div>
+  </fieldset>
+
+
+
+
+
+        <div class="form-group row">
+  <label for="inputPassword3" class="col-sm-2 col-form-label">Количество задействованного персонала</label>
+    <div class="col-sm-10">
+    <input class="form-control" type="number" value="0" name="ManTo" required>
+  </div>  </div>
+
+  <div class="form-group row">
+    <label for="prihina" class="col-sm-2 col-form-label">Описание</label>
+    <div class="col-sm-10">
+      <textarea  class="form-control" name="opisanie" placeholder="Описание" required></textarea>
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="prihina" class="col-sm-2 col-form-label">Комментарий</label>
+    <div class="col-sm-10">
+      <textarea  class="form-control" name="comment" placeholder="Комментарий"></textarea>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button id="ready" type="submit" class="btn btn-primary">Готово</button>
+    </div>
+  </div>
+
+</form>
+
+
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:84px;"></div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/tooltip.js"></script>
+    <script src="assets/js/moment-with-locales.js"></script>
+    <script src="assets/js/btn.js"></script>
+    <script src="assets/js/datatables.min.js"></script>
+    <script src="assets/js/all.min.js"></script>
+</body>
+
+</html>
+<script type="text/javascript">
+  var repair = '<?php  echo($repair); php?>';
+  repair=repair.replace(/\r?\n/g, " ");
+  repair = JSON.parse(repair);
+var day =moment().format('YYYY-MM-DD');
+var time =moment().format('HH:mm');
+var timeday=day+"T"+time;
+document.getElementById("strtime").value=timeday;
+document.getElementById("endtim").value=timeday;
+
+  var tabs, tabs1, tabs2, obor;
+  var selects;
+  if(repair!=""){
+    $('input[name=uzel]').val(repair.uzel);
+    var day1 =moment(new Date(repair.startTime*1000)).format('YYYY-MM-DD');
+var time1 =moment(new Date(repair.startTime*1000)).format('HH:mm');
+var timeday1=day1+"T"+time1;
+     $('input[name=startTime]').val(timeday1);
+        var day11 =moment(new Date(repair.endTime*1000)).format('YYYY-MM-DD');
+var time11 =moment(new Date(repair.endTime*1000)).format('HH:mm');
+var timeday11=day11+"T"+time11;
+     $('input[name=endTime]').val(timeday11);
+     $('#selOb option[data-value='+repair.id_obor+']').attr('selected','selected');
+     $('#prichina').text(repair.prichina);
+     $('input[name=detalName]').val(repair.detailNameDestroy);
+     $('input[name=CodeDetail]').val(repair.codeDetailDestroy);
+     $('input[name=detalNameInsrt]').val(repair.datailNameNew);
+     $('input[name=CodeDetailInsert]').val(repair.codeDetailNew);
+     $('input[name=remont][value='+repair.typeOfRepair+']').prop('checked', true);
+     $('input[name=ManTo]').val(repair.colMan);
+     $('textarea[name=opisanie]').val(repair.opisanie);
+     $('textarea[name=comment]').val(repair.comment);
+      $("#update").html("<input name='updateRepair' style='display:none;' value='"+repair.id+"'/>");
+     $("#ready").text("Изменить");
+  }
+
+
+function getGroup(e){
+console.log(e.value)
+console.log($("#selOb option[value='"+e.value+"']").attr("data-grup"));
+if($("#selOb option[value='"+e.value+"']").attr("data-grup")){
+  var pole="<input required type='text'  class='form-control' name='groupPrichina' placeholder='введите причину остановки группы' />";
+  $("#forseclevel").css("display","none");
+    $("#insertDivSelect").html(pole);
+  return;
+}
+              $.ajax({
+                  type: "GET",
+                  url: "/getGroup.php?id="+e.value,
+                success: function(msg){
+                   selects = JSON.parse(msg);
+                console.log(selects);
+                console.log(e.value);
+                   tabs='<select onchange="seclevel(this)" required class="browser-default  form-control" name="ferstAgregat" id="ferstAgregat"><option  selected="selected">Выберите агрегат</option>'
+                    $.each(selects,function(a3,b3){
+                       tabs+=' <option value="'+b3.name+'">'+b3.name+'</option>'
+                    });
+                      tabs+='</select>';
+                      if(selects!=undefined){$("#secLevFor").css("display","block");}
+                      $("#insertDivSelect").html(tabs);
+
+                }
+              });
+            }
+function seclevel(e){
+  var nalSecl;
+tabs1='<select required onchange="serdLevel(this)" class="browser-default  form-control" name="secAgregat" id="secAgregat"><option  selected="selected" value="">Выберите агрегат</option>'
+  console.log(selects);
+   $.each(selects,function(a3,b3){
+                 
+    if(b3.name==e.value){
+      obor=b3.id;
+  if(b3.secondLevel){nalSecl=1;}
+
+      $.each(b3.secondLevel,function(a,b){
+tabs1+=' <option  value="'+b.name+'">'+b.name+'</option>';
+
+      });
+    }
+  });
+      tabs1+="</select><div class='form-group' id='serdlevelinsert'></div>";
+     if(nalSecl!=undefined){
+      $("#forseclevel").css("display","block");
+      $("#forseclevel").html(tabs1);
+    }else{$("#forseclevel").css("display","none");$("#forseclevel").html("");}
+    }
+
+function serdLevel(e){
+tabs2='<div id="serdLevelDIV" class="col-sm-10"><select class="browser-default  form-control" name="serdAgregat" id="serdAgregat" required><option  selected="selected" value="">Выберите узел</option>'
+as=0;
+   $.each(selects,function(a3,b3){
+                 
+    if(b3.id==obor){
+      $.each(b3.secondLevel,function(a,b){
+           if(b.name==e.value){
+            if(b.serdlevel){nalserdl=1;  as=1;}
+
+              $.each(b.serdlevel,function(a1,b1){   
+              tabs2+=' <option value="'+b1.name+'">'+b1.name+'</option>';
+              
+              });
+          }
+      });
+    }
+  });
+      tabs2+="</select></div>";
+      if(as==1){
+        $("#forserdlevel").css("display","block");
+      
+      $("#forserdlevel").html(tabs2);
+
+    }else{$("#forserdlevel").css("display","none");}
+    }
+
+</script>

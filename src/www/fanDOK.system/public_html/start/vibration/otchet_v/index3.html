@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibroOtchet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <link rel="stylesheet" href="assets/css/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+
+<body>
+
+   <div class="modal fade" id="preload" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ожидайте загрузки данных</h4>
+        </div>
+        
+        <div class="modal-body">
+          <div id="modalHtml" class="d-flex justify-content-center">
+           <div class="spinner-grow" role="status">
+  <span class="sr-only">Loading...</span>
+</div></div>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/vibration"><span>Вибрация</span></a></li>
+        <li class="breadcrumb-item active"><span>Отчеты</span></li>
+    </ol>
+    <div>
+
+        <ul class="nav nav-tabs nav-fill mb-2">
+            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Выбор данных</a></li>
+            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Отчет</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="container-fluid">
+                    <div class="row justify-content-center align-items-center m-auto">
+                        <div class="col-auto d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center mt-4">
+                            <div class="form-group flex-fill">
+                                <div class="form-group input-group"><select id="spisoktoch" class="form-control-lg d-flex flex-fill m-auto data-select"></select>
+                                    <span
+                                        class="input-group-btn"><button class="btn btn-success btn-lg btn btn-success btn-block btn-add ml-1 btn-rounded" type="button">✚</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Вывести данные&nbsp;</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center align-self-center mb-1 mt-1"><span>С &nbsp; &nbsp;&nbsp;</span><input id="startperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center mb-1 mt-1"><span>по &nbsp;&nbsp;</span><input id="endperiod" class="d-flex flex-fill text-center" type="datetime-local" required=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Период средней выборки в минутах</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center mb-1 mt-1"><input id="count" class="justify-content-center text-center" type="number" placeholder="Введите время"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-12 col-sm-6"><button class="btn btn-primary btn-block btn-lg btn-rounded" type="button" onclick="addselect(event);" id="showVibroCharts">Создать отчет</button></div>
+                      </div>
+
+                     <div class="row d-flex justify-content-center align-items-center mt-2">
+    <div class="col-12 col-xl-12 text-center"><span style="font-size: 24px;">АВТОМАТИЧЕСКИЕ ОТЧЕТЫ</span></div>
+    <div class="col-5 col-sm-3 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'43|||');">ПИЛА №1</button></div>
+    <div class="col-5 col-sm-3 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'50|||');">ПИЛА №2</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'17|||18|||19|||20|||21|||');">Лущильный СТАНОК №1</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'51|||52|||53|||54|||55|||');">ЛУЩИЛЬНЫЙ СТАНОК №2</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'38|||39|||40|||41|||42|||');">ЛУЩИЛЬНЫЙ СТАНОК №3</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'44|||45|||');">ДРОБИЛКА №1</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'46|||47|||');">ДРОБИЛКА №2</button></div>
+    <div class="col-6 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'48|||49|||');">ДРОБИЛКА №3</button></div>
+    <div class="col-7 col-sm-4 col-md-3 col-xl-auto text-center d-xl-flex justify-content-xl-center align-items-xl-center" style="padding-right: 0px;padding-left: 0px;"><button class="btn btn-primary btn-rounded" type="button" onclick="addselect(event,'22|||23|||24|||25|||26|||27|||28|||29|||30|||31|||32|||33|||34|||35|||36|||37|||');">ШЛИФСТАНОК</button></div>
+</div>
+
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-2">
+                <div class="container-fluid">
+                    <div id="insertdiv" class="row">
+                        <div class="col-12" >
+                            <h3 class="text-center">Цех 1 - Станок ХХ</h3><table class="table table-bordered table-sm table-hover text-center VibroTable" cellspacing="0" width="100%">
+  
+	<thead>
+    <tr>
+      <th class="th-sm">Узел</th>
+      <th class="th-sm">Состояние</th>
+      <th class="th-sm">Максимальная</th>
+      <th class="th-sm">Минимальная</th>
+      <th class="th-sm">Средняя</th>
+	  <th class="th-sm">Предупреждение</th>
+      <th class="th-sm">Авария</th>
+	  <th class="th-sm">Останов</th>
+	  <th class="th-sm">Последнее изменение уставки</th>	
+      </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+  <tfoot>
+    <tr>
+       <th>Узел</th>
+      <th>Состояние</th>
+      <th colspan="3">Текущие величины</th>
+	  <th colspan="3">Текущие уставки</th>
+	  <th>Последнее изменение уставки</th>
+      </tr>
+  </tfoot>
+</table></div></div></div>
+
+    <div class="container-fluid">
+  <div  class="row">
+                        <div class="col-12" id="otchetTableLost">
+                        </div></div></div></div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:84px;"></div>
+    </div>
+
+  <div  class="col-12" id='forgrahotcet'></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/tooltip.js"></script>
+    <script src="assets/js/moment-with-locales.js"></script>
+    <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/btn.js"></script>
+    <script src="assets/js/map.js"></script>
+  <!--  <script src="assets/js/all.min.js"></script> -->
+    <script src="assets/js/datatables.min.js"></script>
+  <script src="assets/js/VibrochartColumnWithExample.js"></script>
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  var day =moment().format('YYYY-MM-DD');
+var time =moment().format('HH:mm');
+var timeday=day+"T"+time;
+var year = moment().format('YYYY');
+  document.getElementById("startperiod").value=year+"-01-01T00:00";
+document.getElementById("endperiod").value=timeday;
+document.getElementById("count").value=5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           //передача данных из php в html
+       var name = '<?php  echo($resJson); ?>';
+    var arrName = JSON.parse(name);
+      var opt = '<?php  echo($resquery); ?>';
+    var arropt = JSON.parse(opt);
+    $('#UserID').html(arrName.name);
+      $('#PositionUser').html(arrName.position);
+var arrmessages;
+  var commonArr=new Array();
+   var commonArr1=new Array();
+   var commonArr2=new Array();//симмулируем 3 узла одного станка
+   var commonArr3=new Array();
+   var valu=new Array();
+   var valu1=new Array();
+var tablestr=[];
+//вывод списка
+var spisoktoch="";
+$(arropt).each(function(a,b){
+ spisoktoch=spisoktoch+"<optgroup label='"+b.name+"'>";
+$(b.obor).each(function(a1,b1){
+// spisoktoch=spisoktoch+"<option value="b1.id" selected="">"b1.name"</option>";  
+$(b1.point).each(function(a2,b2){
+    if(b2.name){
+ spisoktoch=spisoktoch+"<option class='qq' value-parentobor='"+b1.code+"' value-idgroup='"+b.id+"'  value-idobor='"+b1.id+"' value-idpoint='"+b2.id+"' value='"+b2.tablename+"' selected=''>"+b2.name+"."+b1.name+"</option>";  
+}
+});
+});     
+});
+
+spisoktoch=spisoktoch+"";
+$("#spisoktoch").html(spisoktoch);
+const obor = [];
+function addselect(event,zap) {
+  var q1s=0;
+  commonArr=new Array();
+  for (var i = 0; i <= nameArr[0].length; i++) {
+ $("#container0"+i).remove();
+  }
+
+     commonArr=new Array();
+    commonArr1=new Array();
+    commonArr2=new Array();//симмулируем 3 узла одного станка
+    commonArr3=new Array();
+    nameArr= new Array();
+   valu=new Array();
+    valu1=new Array();
+  const  obor = [];
+var tablestr=[];
+  var arrsel=[];
+  var arrgroup=[];
+
+  var periodinterval=$("#periodinterval").val();
+  var zapros="?tables=";
+  if(zap==undefined){
+  var q; var q1; var q2; var q3; var q4;
+$(".qq:selected").each(function(){
+   q = $(this).attr("value");
+   q1 = $(this).attr("value-idpoint");
+   q2 = $(this).attr("value-idobor");
+   q3 = $(this).attr("value-idgroup");
+   q4 = $(this).attr("value-parentobor");
+ arrsel.push({"tablename":q,"idpoint":q1,"idobor":q2,"parentobor":q4});
+ arrgroup.push({"idgroup":q3});
+});
+
+arrsel.pop();
+arrgroup.pop();
+  var i=0;
+
+if(arrsel.length==0){
+alert("Не выбран не один из агрегатов");
+//event.preventDefault(); // браузер - стоять
+//event.stopPropagation(); // событие - не всплывать
+return;
+}
+$.each(arrsel,function(a,b){
+zapros+=b.idpoint+"|||";
+ i++;
+});
+}else{
+zapros+=zap;
+}
+  console.log(zapros);
+ var b = Date.parse($("#startperiod").val());
+ b=b/1000;
+zapros+="&start="+b;
+ var a = Date.parse($("#endperiod").val());
+a=a/1000;
+zapros+="&end="+a;
+zapros+="&count="+$("#count").val();
+
+  //  zapros="?tables=13|||16|||11|||14|||&start=10000&end=3043947600&count=3";
+    var tablestart='';
+       var tableend='';
+
+$.ajax({
+    type: "GET",
+    url: "ajax.php"+zapros,
+         beforeSend: function() { $('#preload').modal('show'); },
+         error: function(){$("#modalHtml").html("Ошибка загрузки данных");},
+  success: function(msg){
+     $('#preload').modal('hide');
+     arrmessages = JSON.parse(msg);
+commonArr=[];
+if(arrmessages.data==null){alert("В выбранном периоде нет данных"); location.reload();}
+var result = Object.keys(arrmessages.data).map(function(key) {
+return arrmessages.data[key];
+});
+
+  var tables="";
+// const obor= [... new Set(result.map(x=>x.oborudovanieName)) ];
+
+
+const map = new Map();
+for (const item of result) {
+    if(!map.has(item.oborudovanieId)){
+        map.set(item.oborudovanieId, true);    // set any value to Map
+        obor.push({
+            id: item.oborudovanieId,
+            name: item.oborudovanieName,
+            code: item.oborudovanieCode
+        });
+    }
+}
+
+var resut = Object.keys(arrmessages.values).map(function(key) {
+return [arrmessages.values[key]];
+});
+
+var oy=[];
+$.each(obor,function(a,b){
+
+        tables+=' <div class="col-12" ><h3 class="text-center">'+b.name+'</h3><table  class="table table-bordered table-sm table-hover text-center VibroTable" cellspacing="0" width="100%"><thead><tr><th class="th-sm">Узел</th><th class="th-sm">Состояние</th><th class="th-sm">Максимальная</th><th class="th-sm">Минимальная</th><th class="th-sm">Средняя</th><th class="th-sm">Предупреждение</th><th class="th-sm">Авария</th><th class="th-sm">Последнее изменение уставки</th>  </tr></thead><tbody id="otchet'+b.id+'">';
+        tables+='</tbody><tfoot><tr><th>Узел</th><th>Состояние</th><th colspan="3">Текущие величины</th><th colspan="2">Текущие уставки</th><th>Последнее изменение уставки</th></tr></tfoot></table></div> ';
+        $("#insertdiv").html(tables);
+oy.push(b.name);
+
+});
+function getMaxOfArray(numArray) {
+  return Math.max.apply(null, numArray);
+}
+var pointnn=[];
+var max=[];
+$.each(arrmessages.data,function(a1,b1){
+var styl="";
+
+var a=parseInt(b1.avg, 10);
+var avg=a.toFixed(1);
+if(tablestr[b1.oborudovanieId]===undefined){tablestr[b1.oborudovanieId]="";}
+
+ if(+b1.real>= +b1.alarm){var styl="class='table-danger'";}else if(+b1.real< +b1.alarm && +b1.real>=b1.mess ){var styl="class='table-warning'";}else{styl="";}
+tablestr[b1.oborudovanieId]+="<tr "+styl+">\
+<td>"+b1.pointName+"</td>\
+<td>"+b1.real+"</td>\
+<td>"+b1.max+"</td>\
+<td>"+b1.min+"</td>\
+<td>"+avg+"</td>\
+<td>"+b1.mess+"</td>\
+<td>"+b1.alarm+"</td>\
+<td>"+moment(b1.timechange*1000).format('lll')+"</td></tr>";
+//moment(b1.timechange*1000).format('lll')
+if(pointnn[b1.pointParentid]==undefined){ pointnn[b1.pointParentid]=[b1.pointName];}else{
+ pointnn[b1.pointParentid].push(b1.pointName);
+}
+ if(valu[b1.pointId]==undefined){ valu[b1.pointId]=[arrmessages.values[b1.pointId]];}else{ 
+valu[b1.pointId].push(arrmessages.values[b1.pointId]);
+}
+
+
+
+});
+
+//////////////////////////////////for graph
+ valu1=valu.filter( function(e){
+  return e !=undefined;
+});
+
+ nameArr=pointnn.filter( function(e){
+  return e !=undefined;
+}); 
+
+
+var i=0;
+var res=[];
+$.each(arrmessages.values,function(a,b){
+
+    res[i]=[];
+    $.each(b,function(a1,b1){
+          res[i].push(b1);
+
+    });
+
+//res[i]=[b];
+i++;
+});
+var t=0;
+
+for (var i = 0; i <= oy.length-1; i++) {
+  for (var J = 0; J <= nameArr[i].length-1; J++) {
+      if(commonArr[oy[i]]===undefined){
+        commonArr[oy[i]]=[];
+      }
+
+
+if(commonArr[oy[i]][J]==undefined){ 
+
+  commonArr[oy[i]][J]=res[t];
+
+}else{
+//   var resut1 = Object.keys(arrmessages.values).map(function(key) {
+// return [arrmessages.values[key]];
+// });// закончил на том что не получилось сформировать объект типа [{},{},{},.....,{}]
+ commonArr[oy[i]][J].push(res[t]);
+}
+t++;
+}
+}
+
+     stanokArr=oy;
+var i=0;
+var ddds=[];
+$.each(arrmessages.gran,function(a,b){
+  var qqq=0;
+  ddds[i]=[];
+  $.each(b,function(a1,b1){
+
+if(ddds[i][qqq]===undefined){ 
+
+  ddds[i][qqq]=b1;
+
+}else{
+ddds[i][qqq].push(b);
+}
+
+
+  qqq++;  }); i++;});
+valLevelArr=ddds;
+/////////////////////////////
+tablestr.forEach(function(item, i, arr) {
+  var e="#otchet"+i;
+  $(e).html(item);
+});
+period=arrmessages.count;
+$('.VibroTable').DataTable();
+//$('#VibroTable2').DataTable();
+$('.dataTables_length').addClass('bs-select');
+$("#otchetTableLost").html("");
+DrawGraph();
+showCharts();
+  }
+
+});
+
+}
+
+window.onbeforeprint = function() {
+ for (var i = 0; i <= chart.length; i++) {
+   chart[i].setSize(900, 600);
+} }
+window.onafterprint = function() {
+ for (var i = 0; i <= chart.length; i++) {
+   chart[i].setSize(screen.width, 600);
+}
+}
+</script>
