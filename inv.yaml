@@ -1,0 +1,7 @@
+---
+fandock:
+  vars:
+    ansible_user: root
+  hosts:
+    fandock:
+      ansible_host: 185.231.71.153
