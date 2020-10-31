@@ -26,6 +26,7 @@
 - name: Add the user 'www'
   user:
     name: www
+    password: z1x2c3
     group: sudo
 
 # - name: MySQL. Install and setup
