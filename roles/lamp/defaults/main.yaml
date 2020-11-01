@@ -1,0 +1,10 @@
+app_user: www
+http_host: fanDOC.system
+http_conf: fanDOC.system.conf
+http_port: 80
+http_path: /var/www/fanDOC.system/public_html
+
+
+app_repo: "https://github.com/RysnikM/sandbox.git"
+app_path: /home/www
+app_version: fandock

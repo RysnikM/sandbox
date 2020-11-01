@@ -13,6 +13,7 @@
   file: 
     path: /code 
     state: directory
+    ownew: "{{ sudo_user }}"
 
 - name: Add foldef for jenkins
   file: 
@@ -23,9 +24,9 @@
   # shell:
     # cmd: echo "alias cls='clear'" >> ~/.bashrc
 
-- name: Add the user 'www'
+- name: Add the sudo user
   user:
-    name: www
+    name: "{{ sudo_user }}"
     shell: /bin/bash
     password: "{{s_pass}}"
     groups: sudo
@@ -34,6 +35,6 @@
 
 - name: Add user www to sudoers
   shell:
-    cmd: echo "www  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/www
+    cmd: echo ""{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/"{{ sudo_user }}"
   tags: 
     - add_user
