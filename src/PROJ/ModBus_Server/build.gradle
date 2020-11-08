@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+}
+
+group '1'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/io.vertx/vertx-core
+    compile group: 'io.vertx', name: 'vertx-core', version: '3.6.3'
+    // https://mvnrepository.com/artifact/io.vertx/vertx-web
+    compile group: 'io.vertx', name: 'vertx-web', version: '3.6.3'
+    // https://mvnrepository.com/artifact/io.vertx/vertx-unit
+    testCompile group: 'io.vertx', name: 'vertx-unit', version: '3.6.3'
+    // https://mvnrepository.com/artifact/io.vertx/vertx-web-client
+    compile group: 'io.vertx', name: 'vertx-web-client', version: '3.6.3'
+    // https://mvnrepository.com/artifact/com.digitalpetri.modbus/modbus-master-tcp
+    compile group: 'com.digitalpetri.modbus', name: 'modbus-master-tcp', version: '1.1.1'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+    //
+    compile 'io.vertx:vertx-mysql-postgresql-client:3.6.3'
+}
+
+mainClassName = 'ServerMain'
+
+shadowJar {
+    baseName = 'ServerMain'
+    classifier = null
+    version = null
+}

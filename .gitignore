@@ -128,7 +128,7 @@ build/
 .vertx
 vertx/
 #fandok_opros/
-PROJ/
+# PROJ/
 bachup_java/
 #src/
 
