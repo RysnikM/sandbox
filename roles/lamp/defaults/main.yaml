@@ -1,0 +1,16 @@
+app_user: root
+http_host: 185.231.71.153
+http_conf: "{{http_host}}.conf"
+http_port: 80
+# http_path: /var/www/fanDOK.system/public_html
+http_path: "/var/www/{{http_host}}"
+
+app_repo: "https://github.com/RysnikM/sandbox.git"
+app_path: /opt/fandock
+app_version: fandock
+
+app_db_name: fanDOK
+app_db_user: server
+app_db_pass: z1x2c3v4
+
+mysql_root_password: z1x2c3v4

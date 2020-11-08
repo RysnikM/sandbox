@@ -1,6 +1,6 @@
 ---
 - hosts: fandock
-  gather_facts: no
+  gather_facts: False
   become: true
   pre_tasks:
     - name: check host
@@ -15,4 +15,5 @@
       tags: 
         - info
   roles:
-    - server
+    # - server
+    - lamp
