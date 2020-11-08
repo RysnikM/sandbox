@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraficOnlineGENER</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+</head>
+
+<body>
+
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/vibration"><span>Вибрация</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/vibration/online_v"><span>ОНЛАЙН - Выбор станка</span></a></li>
+        <li class="breadcrumb-item active" id="breadNameStanok"><span>Станки</span></li>
+    </ol>
+<script type="text/javascript">
+    var onlineArray=<?php echo($online); ?>;;//массив который содержит дату и все обновляемые значения {date,val1,val2,val3....} тут должны быть цифры и этот массив должен постоянно обновляться
+
+
+
+
+
+
+var ALARM=<?php echo($granica_mess); ?>;
+var WARNING=<?php echo($granica_mess); ?>;//Сформированные массивы уставок аварий предупреждений и остановов
+var STOP=<?php echo($granica_alarm); ?>;
+var DateArray=<?php echo($timepush); ?>;//=[];//массив содержащий только отсортированные даты подставляемые в графики
+var NameCharts=<?php echo($namecharts); ?>;//['Узел0','Узел1','Узел2','Узел3','Узел4','Узел5','Узел6','Узел7','Узел8','Узел9'];//подписи графиков = подписям выбранным на предыдущей странице//более расширенные названия которые будут вставляться в заголовок каждого графика...ФОРМИРУЙ ЗДЕСЬ ЖЕ
+var NamePointCharts=<?php echo($pointsname); ?>;//['Точка0','Точка1','Точка2','Точка3','Точка4','Точка5','Точка6','Точка7','Точка8','Точка9'];//подписи кнопок переходов по графикам...ФОРМИРУЙ ЗДЕСЬ ЖЕ
+var tablename=<?php echo($tablename); ?>;
+var arrPropertiesHeader=<?php echo($pointsid); ?>;//=[];//массив содержащий все англоязычные названия узлов или их id...ФОРМИРУЙ ЗДЕСЬ ЖЕ tablename
+var zag= '<?php echo($oborudovanie["name"]); ?>';
+//var DataArr=new Array();//отдельные массивы для каждого графика//будет глобальным!!!!!!!
+
+var DataArr=<?php print_r($values_to_js); ?>;
+
+
+console.log(DataArr);
+    function onlinedata(){
+        var zapros="";
+$(tablename).each(function(a,b){
+ zapros+=b+"|||";
+});
+  
+
+$.ajax({
+    type: "GET",
+    url: "ajax.php?get=1&tables="+zapros,
+  success: function(msg){
+     onlineArray = JSON.parse(msg);
+    var err="";
+
+
+  }
+});
+}
+
+$(document).ready(function () {
+            setInterval(function() {
+  onlinedata();
+}, 2000);
+});
+
+
+
+
+</script>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://ca01.by/plc_files/js/script.min.js"></script>
+    <script src="assets/js/highstock.js"></script>
+    <script src="assets/js/boost.js"></script>
+    <script src="http://ca01.by/plc_files/js/d3-parse.js"></script>
+ <!--   <script src="assets/js/check.js"></script>-->
+    <script src="assets/js/VBonline.js"></script>
+</body>
+
+</html>

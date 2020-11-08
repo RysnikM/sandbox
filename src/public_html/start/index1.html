@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-with-Button.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+   
+</head>
+<body>
+<div class="container-fluid" id="status">
+        <div class="row">
+            <div class="col-8" style="border: 2px solid #51D6FF;">
+                <div class="row">
+                    <div class="col-12 text-center"><span style="font-size:20px;">Статус соединения</span></div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-auto align-self-center"><span style="font-size:20px;">ПЛК</span></div>
+                            <div class="col-auto">
+                                <div id="IndicPLC">
+                                	<svg width="31" height="25" >
+    								<rect id="IPLC" x="5" y="5" width="20" height="15" rx="2"
+          							fill="yellowgreen" stroke="green" stroke-width="1">
+          							<title>Состояние ПЛК</title>
+          							</rect>
+									</svg>
+                                </div>
+                            </div>
+                            <div class="col-auto align-self-center"><span style="font-size:20px;">Перефирия</span></div>
+                            <div class="col-auto align-self-center text-center">
+                                <div id="IndicPeref">
+                                	
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 justify-content-center align-items-center align-content-center align-self-center" style="border:2px solid #51D6FF;padding:12px;">
+                <div class="row">
+                    <div class="col-10 justify-content-center align-content-center align-self-center text-center"><span id="NameUser" style="font-size:20px;">Пользователь</span><br><span id="PositionUser" style="font-size:20px;">Пользователь</span></div>
+                    <div class="col-2 align-self-center"><button class="btn btn-primary float-right" onclick="logout();" type="button" style="margin-right:5px;" id="Logout">Выйти</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="team-clean">
+    <div id="croshki"></div>
+        <div class="container-fluid" style="margin-top:20px;">
+            <div class="row">
+                <div class="col-4  text-center" id="database"><img class="img-fluid" src="img/bd.png" style="width:250px;">
+                    <h3 class="name"><br>Обзор баз данных<br></h3>
+                    <p class="description">В данной вкладке содержаться данные по всем измеряемым величинам</p>
+                </div>
+                <div class="col-4 text-center" id="online"><img class="img-fluid" src="img/gr.png" style="width:250px;">
+                    <h3 class="name"><br>Онлайн просмотр графиков<br></h3>
+                    <p class="description">Онлайн просмотр графиков всех измеряемых величин разделенных по единицам оборудования</p>
+                </div>
+                <div class="col-4 text-center" id="scaner"><img class="img-fluid" src="img/3d.png" style="width:250px;">
+                    <h3 class="name"><br>3D-сканер<br></h3>
+                    <p class="description">Здесь содержаться результаты сканирования древесины</p>
+                </div>        
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4 text-center" id="oee"><img class="img-fluid" src="img/oee.png" style="width:250px;">
+                    <h3 class="name"><br>Данные ОЕЕ<br></h3>
+                    <p class="description">Здесь содержится таблицы и графики основных показателей OEE</p>
+                </div>
+            </div>
+            <div  class="row justify-content-center">
+                <div class="col-4 text-center" id="param"><img class="img-fluid" src="img/param.jpg" style="width:250px;">
+                    <h3 class="name"><br>Параметры<br></h3>
+                    <p class="description">Изменение параметров и настроек сервера</p>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- <br>
+<div class="container-fluid" style="margin-top: 20px;">
+	<div class="row justify-content-left">
+ <div class="col-3">
+ <form>
+ <div class="form-group">
+ <div class="form-group input-group">
+ <select class="form-control">
+ <option>Станок 1</option>
+ <option>Пункт 2</option>
+ <option>Пункт 3</option>
+ </select>
+ <span class="input-group-btn">
+ <button type="button" class="btn btn-success btn-add">✚</button>
+ </span>
+ </div>
+ </div> 
+ </form>
+ </div>
+
+
+	</div>
+
+</div> -->
+
+
+    <script type="text/javascript">
+    	function drawStatusPerepheria(number){
+    		for (var i = 1; i < number+1; i++) {
+    			$("#IndicPeref").append('<svg width="31" height="25" ><rect id="IPph'+i+'" x="5" y="5" width="20" height="15" rx="2"fill="yellowgreen" stroke="green" stroke-width="1"><title>Состояние блока переферии '+i+'</title><rect></svg>')
+    		}
+     	}
+     	drawStatusPerepheria(12);
+		var arrayStatus=[1,0,1,0,1,0,1,0,1,0,1,0,1];
+
+    	function changeStatus(arrStatus,clGreen,brGreen,clRed,brRed) {
+    		if (arrStatus[0]) {
+    			$("#IPLC").attr('fill', clGreen);
+    			$("#IPLC").attr('stroke', brGreen);
+    		} else{
+    			$("#IPLC").attr('fill', clRed);
+    			$("#IPLC").attr('stroke', brRed);
+    		}
+    	
+    		for (var i = 1; (i < arrStatus.length) ; i++) {
+    		if (arrStatus[i]) {
+    			$("#IPph"+i).attr('fill', clGreen);
+    			$("#IPph"+i).attr('stroke', brGreen);
+    		} else {
+    			$("#IPph"+i).attr('fill', clRed);
+    			$("#IPph"+i).attr('stroke', brRed);
+    		}
+    		}
+    		}
+    	changeStatus(arrayStatus,'yellowgreen','green','orangered','red');
+
+    </script>
+
+<script>
+	 $(document).on('click', '.btn-add', function(event) {
+	 event.preventDefault();
+
+	 var field = $(this).closest('.form-group');
+	 var field_new = field.clone();
+
+	 $(this)
+	 .toggleClass('btn-success')
+	 .toggleClass('btn-add')
+	 .toggleClass('btn-danger')
+	 .toggleClass('btn-remove')
+	 .html('✖');
+
+	 field_new.find('input').val('');
+	 field_new.insertAfter(field);
+	 });
+
+	 $(document).on('click', '.btn-remove', function(event) {
+	 event.preventDefault();
+	 $(this).closest('.form-group').remove();
+	 });
+</script>
+<script>
+    //передача данных из php в html
+       var name = '<?php  echo($resJson); ?>';
+    var arrName = JSON.parse(name);
+    $('#NameUser').html(arrName.name);
+      $('#PositionUser').html(arrName.position);
+//вывод хлбеных крошек на странице
+var croshki="<ol class='breadcrumb'>";
+$(arrName.path).each(function(a,b){
+ croshki=croshki+" "+"<li class='breadcrumb-item'><a href='"+b.path+"'>"+b.name+"</a></li>";
+});
+croshki=croshki+"</ol>"
+$("#croshki").html(croshki);
+
+      // логаут пользователя
+    function logout(){
+$.ajax({
+    type: "GET",
+    url: "/phpmodule/sessuser.php?name=logout",
+  success: function(msg){
+location.href="/index.php";
+  }
+ });        
+
+    }
+$("#param").click(function(){
+    if(arrName.level>7){
+location.href="parametrs/index.php";
+}else{
+    alert("Нет прав доступа");
+}
+});
+
+</script>
+</body>
+</html>

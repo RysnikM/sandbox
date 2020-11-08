@@ -127,6 +127,8 @@ gradle/
 build/
 .vertx
 vertx/
-fandok_opros/
-src/
+#fandok_opros/
+PROJ/
+bachup_java/
+#src/
 

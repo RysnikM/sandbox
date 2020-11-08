@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OEE</title>
+   
+        <script type="text/javascript" src="/js/jq.js"></script>
+</head>
+
+<body><div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Изменение комментария</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+    <div class="row">
+        <div class="col text-center"><span id="categoryID" style="font-size:30px;">Станок 1 :</span><span id="statusID" class="mx-1" style="font-size:30px;">СОСТОЯНИЕ</span></div>
+    </div>
+                <div class="row">
+    <div class="col text-center my-2"><span>c</span><strong class="mx-1" id="timeXID">Bold</strong><span>по</span><strong class="mx-1" id="timeX2ID">Bold</strong></div>
+</div>
+</div>
+          <form action="index.php">
+             <input class="form-check-input" style="display: none;" type="text" name="idgr" id="idgr" value="">
+      <div id="prich" style="display:none;" class="form-group">
+              <label for="message-text" class="form-control-label">Причина:</label>
+             <select class="browser-default  form-control" name="prichina" id="prichina" required>
+      <option  selected="selected" value=''>Выберите причину</option>
+    <option value="1">Ремонтные работы</option>
+      <option value="Погодные условия (сильный ветер)">Погодные условия (сильный ветер)</option>
+      <option value="Отсутствие сырья">Отсутствие сырья</option>
+      <option value="Отсутствие пара">Отсутствие пара</option>
+    </select>
+            </div>
+      <div id="sluzh" style="display:none" class="form-group">
+              <label for="message-text" class="form-control-label">Кого вызывали:</label>
+             <select class="browser-default  form-control" name="sluzhba" id="sluzhba" required>
+               <option  selected="selected" value=''>Выберите службу</option>
+      <option value="1">Электрик</option>
+      <option value="2">Слесарь</option>
+          <option value="3">Слесарь и электрик</option>
+    </select>
+            </div>
+            <div id="rem" style="display:none" class="form-group">
+              <label for="message-text" class="form-control-label">Тип ремонта:</label>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="typerem" id="inlineRadio1" value="2" required>
+  <label class="form-check-label" for="inlineRadio1">Аварийный ремонт</label>
+</div>
+<div class="form-check form-check-inline">
+ <!--  <input class="form-check-input" type="radio" name="typerem" id="inlineRadio2" value="1">
+  <label class="form-check-label" for="inlineRadio2">Плановый ремонт</label> -->
+</div>
+            <div id="agr" style="display:none" class="form-group">
+              <label for="message-text" class="form-control-label">Агрегат вышедший из строя:</label>
+<div id="insertDivSelect" class="form-check form-check-inline">
+  <input class="form-control" type="text" name="agregat" id="agregat" placeholder="введите агрегат вышедший из строя">
+</div>
+</div>
+<div class="form-group" id="forseclevel"></div>
+            <div  style="display:none" class="form-group">
+  <input class="form-control" type="text" name="id" id="id" >
+</div>
+           <div  style="display:none" class="form-group">
+  <input class="form-control" type="text" name="oborname" id="oborname" >
+</div>
+          <div  style="display:none" class="form-group">
+  <input class="form-control" type="text" name="timestart" id="timeStr" >
+</div>
+        <div  style="display:none" class="form-group">
+  <input class="form-control" type="text" name="timeend" id="timeEnd" >
+</div>
+
+
+            </div>
+
+              <div class="form-group">
+              <label for="message-text" class="form-control-label">Комментарий:</label>
+              <textarea class="form-control" name="comment" id="commentID"></textarea>
+            </div>
+             <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+          <button type="submit" class="btn btn-primary" id='saveButton'>Сохранить</button>
+        </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="/start"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="/start/oee"><span>OEE</span></a></li>
+        <li class="breadcrumb-item active"><span>ОНЛАЙН</span></li>
+    </ol>
+   <div class="container-fluid" style="padding-right:25px;">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center" id="chartOEE"></div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 float-right d-flex flex-row flex-fill justify-content-start flex-wrap flex-sm-row flex-md-row flex-lg-column flex-xl-column justify-content-xl-center" id="rangeSelect">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center"><span class="align-self-center text-center" style="font-size:19px;">Период</span></div>
+                    <div class="col-12 d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap flex-lg-column flex-xl-column"
+                        style="padding-left:0px;padding-right:0px;">
+                        
+                        <button class="btn btn-outline-info d-flex justify-content-center waves-effect btn-rounded"
+                            type="button" data-bs-hover-animate="flash" id="hour" style="width:90px;">1час</button>
+                            
+                            <button class="btn btn-outline-info d-flex justify-content-center waves-effect btn-rounded" type="button" data-bs-hover-animate="flash" id="shift" style="width:90px;">Смена</button>
+                            
+                            <button class="btn btn-outline-info d-flex justify-content-center waves-effect btn-rounded"
+                            type="button" data-bs-hover-animate="flash" id="day" style="width:90px;">День</button>
+                            
+                            <button class="btn btn-outline-info d-flex justify-content-center waves-effect btn-rounded" type="button" data-bs-hover-animate="flash" id="week" style="width:90px;">Неделя</button>
+                            
+                            <button class="btn btn-outline-info d-flex justify-content-center waves-effect btn-rounded" type="button" data-bs-hover-animate="flash" id="month" style="width:90px;">Месяц</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:110px;"></div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/highcharts.js"></script>
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/moment-with-locales.js"></script>
+    <script src="assets/js/xrange.js"></script>
+    <script src="assets/js/bs-animation.js"></script>
+    
+    <script type="text/javascript">
+
+
+             var mass_obor = '<?php  echo($resultJson); ?>';
+
+   mass_obor=mass_obor.replace(/\r?\n/g, " ");
+   var json_obor = JSON.parse(mass_obor);
+
+    var mass = '<?php  echo($mass); ?>';
+ mass=mass.replace(/\r?\n/g, " ");
+     mass = JSON.parse(mass);
+
+     var strData=mass;
+      var strCategories=[];
+         var r=0;
+         var sootn={};
+    $.each(json_obor,function(a1,b1){
+sootn[r]={"id":b1.id,"sootn":r};
+strCategories[r]=b1.name;
+r++;
+});
+    r=0;
+
+
+
+        $.each(mass,function(a1,b1){
+                $.each(b1,function(a2,b2){
+                    if(Array.isArray(b2)){
+ $.each(b2,function(a3,b3){
+ $.each(sootn,function(a4,b4){
+
+if(b3.y==b4.id){
+    b3.y=b4.sootn;
+    b1.idobr=b4.id;
+
+}
+    });
+    });
+                    }
+});});
+
+// console.log(mass);
+
+
+
+
+
+
+    </script>
+
+    <script type="text/javascript">
+    
+$('#saveButton').click(function(){
+  if($("#prichina").val()!="1"){
+if( $("#prichina").val()!=""){
+    var text=$('#commentID').val();
+ var url = "index.php?oborname="+oborname+"&id="+saveId+"&text="+text+"&prichina="+$("#prichina").val()  +"&comment="+text;
+ alert(url);
+    $.ajax({
+    type: "GET",
+    url: url,
+  success: function(msg){
+    alert(msg);
+
+  }
+});
+ apdatecoment();
+}else{
+ alert(" Не выбрана причина"); return;
+}
+}
+ });
+
+
+  $("#prichina").change(function(){
+  if(this.value==="1"){
+    $("#sluzh").css("display","block");
+      $("#rem").css("display","block");
+      $("#agr").css("display","block");
+ 
+  }else{  $("#sluzh").css("display","none");
+     $("#rem").css("display","none");
+      $("#agr").css("display","none");
+  }
+    });
+
+function updORadd(massSost){ //будем вкидывать массив объеков вида [{seriesN:,y:,x:,id:},{...},..] seriesN-это номер серии куда стучимся РАБОТАЕТ,ВЫКЛЮЧЕНО,АВАРИЯ,ПРОСТОЙ; у-это узел;x-текущее время ( x2 времени не будет передаем только текущее время)
+
+for (var j = 0; j<massSost.length; j++) {
+  var uzel=massSost[j];
+  var adPbool=0;
+  var upPbool=0;
+  var currentSeriesData=chartOEE.series[uzel["seriesN"]].data;
+  var lastIndexSeries=chartOEE.series[uzel["seriesN"]].data.length-1;
+  // var h=0;
+  for (var i = lastIndexSeries ; i >= 0; i--) {
+
+    if ((uzel["y"]==currentSeriesData[i].y) && (currentSeriesData[i].id== uzel["id"])){//update
+      upPbool=1;
+    }
+    if ((uzel["y"]==currentSeriesData[i].y) && (currentSeriesData[i].id < uzel["id"])){//add
+      adPbool=1;
+    }
+    if (upPbool==1) {
+      currentSeriesData[i].x2=uzel["x"];
+  
+      currentSeriesData[i].series.redraw();
+      break;
+    }
+    if ((adPbool==1)||(i==0)){
+      chartOEE.series[uzel["seriesN"]].addPoint({y:uzel["y"],x:uzel["x"],x2:uzel["x"],id:uzel["id"],name:null});
+      break;
+    }
+    // if (h>20){
+    //   break;
+    // }
+    // h++;
+  }
+}};
+
+function update(){
+$.ajax({
+    type: "GET",
+    url: "ajax.php",
+  success: function(msg){
+     resive = JSON.parse(msg);
+
+           //  $.each(resive,function(a1,b1){
+                $.each(resive,function(a2,b2){
+            
+ //$.each(b2,function(a3,b3){
+ $.each(sootn,function(a4,b4){
+
+if(b2.y==b4.id){
+    b2.y=b4.sootn;
+
+}
+    });
+ //   });
+                    
+});
+                //});
+
+updORadd(resive);
+// chartOEE.update({
+//         series: strData
+//         });
+
+  }
+});
+}
+
+// $(document).ready(function () {
+ 
+//     setInterval(function() {
+//    update();
+// }, 5000);
+// });
+
+window.onbeforeprint = function() {
+ for (var i = 0; i <= chart.length; i++) {
+   chart[i].setSize(900, 600);
+} }
+window.onafterprint = function() {
+ for (var i = 0; i <= chart.length; i++) {
+   chart[i].setSize(screen.width, 600);
+}
+}//этот
+</script>
+
+<!--     <script src="assets/js/oeeChart.js"></script>
+ --></body>
+
+</html>

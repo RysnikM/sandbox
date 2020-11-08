@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibroOtchet</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <ol class="breadcrumb" id="breadcrumbsID" style="background-color:#ffffff;padding-bottom:0px;">
+        <li class="breadcrumb-item"><a href="index.html"><span>Главная</span></a></li>
+        <li class="breadcrumb-item"><a href="index.html"><span>Вибрация</span></a></li>
+        <li class="breadcrumb-item active"><span>Отчеты</span></li>
+    </ol>
+    <div>
+        <ul class="nav nav-tabs nav-fill mb-2">
+            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Выбор данных</a></li>
+            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Отчет</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <div class="container-fluid">
+                    <div class="row justify-content-center align-items-center m-auto">
+                        <div class="col-auto d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center mt-4">
+                            <div class="form-group flex-fill">
+                                <div class="form-group input-group"><select id="spisoktoch" class="form-control-lg d-flex flex-fill m-auto data-select">
+                                    
+                                </select>
+                                    <span
+                                        class="input-group-btn"><button class="btn btn-success btn-lg btn btn-success btn-block btn-add ml-1" type="button">✚</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-3">
+                        <div class="col-12">
+                            <h4 class="text-center">Вывести данные&nbsp;</h4>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center align-self-center mb-1 mt-1"><span>С &nbsp; &nbsp;&nbsp;</span><input class="d-flex flex-fill" type="datetime-local" required=""></div>
+                                <div class="col-12 col-sm-12 col-md-6 d-flex flex-fill justify-content-around align-items-center align-content-center mb-1 mt-1"><span>по &nbsp;&nbsp;</span><input class="d-flex flex-fill" type="datetime-local" required=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-6"><button class="btn btn-primary btn-block btn-lg" type="button" id="showVibroCharts">Создать отчет</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 d-flex flex-fill justify-content-center align-items-center align-content-center align-self-center" style="padding-top:356px;">
+<div class="l_main">
+  <div class="l_square"><span></span><span></span><span></span></div>
+  <div class="l_square"><span></span><span></span><span></span></div>
+  <div class="l_square"><span></span><span></span><span></span></div>
+  <div class="l_square"><span></span><span></span><span></span></div>
+</div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="padBot">
+        <div style="padding-bottom:84px;"></div>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/btn.js"></script>
+</body>
+<script type="text/javascript">
+           //передача данных из php в html
+       var name = '<?php  echo($resJson); ?>';
+    var arrName = JSON.parse(name);
+      var opt = '<?php  echo($resquery); ?>';
+    var arropt = JSON.parse(opt);
+    $('#UserID').html(arrName.name);
+      $('#PositionUser').html(arrName.position);
+//вывод хлбеных крошек на странице
+var croshki="<ol class='breadcrumb'>";
+$(arrName.path).each(function(a,b){
+ croshki=croshki+" "+"<li class='breadcrumb-item'><a href='"+b.path+"'>"+b.name+"</a></li>";
+});
+croshki=croshki+"</ol>"
+$("#croshki").html(croshki);
+
+
+
+//вывод списка
+var spisoktoch="";
+$(arropt).each(function(a,b){
+ spisoktoch=spisoktoch+"<optgroup label='"+b.name+"'>";
+$(b.obor).each(function(a1,b1){
+// spisoktoch=spisoktoch+"<option value="b1.id" selected="">"b1.name"</option>";  
+$(b1.point).each(function(a2,b2){
+    if(b2.name){
+ spisoktoch=spisoktoch+"<option value='"+b1.id+"' selected=''>"+b2.name+"."+b1.name+"</option>";  
+}
+});
+});     
+});
+spisoktoch=spisoktoch+"";
+$("#spisoktoch").html(spisoktoch);
+
+</script>
+</html>
