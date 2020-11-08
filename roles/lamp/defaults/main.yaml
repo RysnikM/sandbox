@@ -2,7 +2,6 @@ app_user: root
 http_host: 185.231.71.153
 http_conf: "{{http_host}}.conf"
 http_port: 80
-# http_path: /var/www/fanDOK.system/public_html
 http_path: "/var/www/{{http_host}}"
 
 app_repo: "https://github.com/RysnikM/sandbox.git"
