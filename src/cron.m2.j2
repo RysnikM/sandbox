@@ -1,7 +1,0 @@
-*/5 * * * * /usr/bin/php /var/www/fanDOK.system/public_html/phpmodule/cron_alarms.php
-*/10 * * * * /usr/bin/php /var/www/fanDOK.system/public_html/phpmodule/oee.php
-*/1 * * * * /usr/bin/php /var/www/fanDOK.system/public_html/phpmodule/cron_indication.php
-@reboot java -jar /home/ast/Документы/ModBus_Server/ServerMain.jar
-
-#server restart
-@hourly /sbin/reboot &>/var/null

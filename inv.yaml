@@ -1,8 +1,8 @@
 ---
-fandock:
+server001:
   vars:
     ansible_user: root
   hosts:
     fandock:
-      ansible_host: 185.231.71.153
+      ansible_host: localhost
       
