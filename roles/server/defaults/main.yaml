@@ -1,0 +1,16 @@
+---
+apt_packages:
+  - tmux
+  - vim 
+  - mosh 
+  - htop 
+  - git 
+  - curl 
+  - wget 
+  - unzip 
+  - zip
+  - tree
+  - default-jre
+  - default-jdk
+sudo_user: www
+s_pass: $6$5PJtuKN86SaOuCzi$dA4XgU2KkW2F7YnbeT1e8Z..rZX329IOTYQucVhXMVPlryv9r9Q9D2XFB9ETIXEcwYarrlL6i3a3/ZeMVD6eN/
