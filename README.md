@@ -1,7 +1,7 @@
 
-### Start ansible playbook
+### Start ansible playbook for install docker
 ``` bash
-ansible-playbook -i inv.yaml play.yaml
+ansible-playbook ci_docker.yaml
 ```
 
 ### For create sudo pass use sc
@@ -9,13 +9,3 @@ ansible-playbook -i inv.yaml play.yaml
 python3 -c 'import crypt; print(crypt.crypt("<Требуемый пароль>"))'
 ```
 ---
-
-
-
-
-
-
-#### comments
-1. Обсалютно неправильная запись в базу данных о работе оборудования;
-2. Вывод данных в WEB - не выводит за выбранный период;
-3. 
