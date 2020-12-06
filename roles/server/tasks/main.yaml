@@ -5,38 +5,20 @@
   tags:
     - update
 
-- name: Set timezone to Europe/Minsk
+- name: Ser timezone
   community.general.timezone:
     name: Europe/Minsk
   tags:
     - timezone
 
 - name: Install packages
+  sudo: yes
   apt:
     name: "{{ apt_packages }}"
     state: latest
     update_cache: yes
   tags:
-    - install_packages
-
-- name: Add foldef for code
-  file: 
-    path: /code 
-    state: directory
-    ownew: "{{ sudo_user }}"
-  tags:
-    - add_folder_code
-
-- name: Add foldef for jenkins
-  file: 
-    path: /jenkins 
-    state: directory
-  tags:
-    - jenkins_add_folder
-  
-# - name: Add any alias
-  # shell:
-    # cmd: echo "alias cls='clear'" >> ~/.bashrc
+    - install_packages 
 
 - name: Add the sudo user
   user:
@@ -52,3 +34,43 @@
     cmd: echo ""{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/"{{ sudo_user }}"
   tags: 
     - add_user
+
+- name: Add foldef for code
+  sudo: yes
+  file: 
+    path: ~/test_folder
+    state: directory
+    owner: "{{ sudo_user }}"
+  tags:
+    - add_folder_code
+
+- name: Add foldef for jenkins
+  sudo: yes
+  file: 
+    path: ~/jenkins
+    state: directory
+    owner: "{{ sudo_user }}"
+  tags:
+    - jenkins_add_folder
+
+- name: Find alias
+  shell: cat ~/.bashrc
+  register: alias
+  tags: 
+    - test
+
+- name: Add any alias
+  shell:
+    cmd: echo "alias cls='clear'" >> ~/.bashrc
+  when: alias.stdout.find('clear') != -1
+  tags:
+    - test
+
+- name: Debus messages
+  when: alias.stdout.find('clear') != 1
+  debug: msg="Alias already exist"
+  tags:
+    - test
+
+
+

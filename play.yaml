@@ -1,8 +1,10 @@
 ---
+- import_playbook: ci_docker.yaml
+
+# DEPLOY ROLS
 - hosts: localhost
   gather_facts: no
   become: true
-  sudo: yes
   pre_tasks:
     - name: check host
       shell: | 
@@ -14,6 +16,3 @@
 
   roles:
     - server
-    
-  post_tasks:
-    include: ci_docker.yaml
