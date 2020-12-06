@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  gather_facts: False
+  become: true
+  tasks:
+    - name: Install dipendenses
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - wget
+        - gnupg-agent
+        - software-properties-common
+    - name: Download vscode
+      shell:
+        cmd: wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+    - name: import vscode repo
+      shell:
+        cmd: sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+    - name: install vscode
+      shell:
+        cmd: sudo apt update -y && sudo apt install code -y
+

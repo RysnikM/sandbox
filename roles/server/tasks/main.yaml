@@ -5,11 +5,11 @@
   tags:
     - update
 
-# - name: Ser timezone
-#   community.general.timezone:
-#     name: Europe/Minsk
-#   tags:
-#     - timezone
+      #- name: Ser timezone
+      #  community.general.timezone:
+      #    name: Europe/Minsk
+      #  tags:
+      #    - timezone
 
 - name: Install packages
   sudo: yes
@@ -31,7 +31,7 @@
 
 - name: Add user www to sudoers
   shell:
-    cmd: echo ""{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/"{{ sudo_user }}"
+    cmd: echo " "{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ "{{ sudo_user }}"
   tags: 
     - add_user
 
