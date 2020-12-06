@@ -35,10 +35,27 @@
   tags: 
     - add_user
 
+- name: Find groups
+  shell: cat /etc/passwd
+  register: groups
+
+- name: Create group docker
+  group:
+    name: docker
+    state: present
+  when: groups.stdout.find('docker') != -1
+  
+- name: Add user to group
+  user:
+    name: "{{ sudo_user }}"
+    groups: docker
+    append: yes
+  when: groups.stdout.find('docker') != -1
+
 - name: Add foldef for code
   sudo: yes
   file: 
-    path: ~/test_folder
+    path: ~/code
     state: directory
     owner: "{{ sudo_user }}"
   tags:
@@ -54,14 +71,14 @@
     - jenkins_add_folder
 
 - name: Find alias
-  shell: cat ~/.bashrc
+  shell: cat /home/"{{ sudo_user }}"/.bashrc
   register: alias
   tags: 
     - test
 
 - name: Add any alias
   shell:
-    cmd: echo "alias cls='clear'" >> ~/.bashrc
+    cmd: echo "alias cls='clear'" >> /home/"{{ sudo_user }}"/.bashrc
   when: alias.stdout.find('clear') != -1
   tags:
     - test
