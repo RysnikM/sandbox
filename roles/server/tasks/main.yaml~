@@ -44,15 +44,13 @@
     name: docker
     state: present
   when: groups.stdout.find('docker') != -1
-  ignore_errors: yes
-
+  
 - name: Add user to group
   user:
     name: "{{ sudo_user }}"
     groups: docker
     append: yes
   when: groups.stdout.find('docker') != -1
-  ignore_errors: yes
 
 - name: Add foldef for code
   sudo: yes

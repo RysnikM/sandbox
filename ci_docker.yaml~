@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  gather_facts: true
+  gather_facts: False
   become: true
   tasks:
     - name: Install dipendenses
@@ -37,17 +37,27 @@
         state: started
         enabled: yes
 
+    - name: Find groups
+      shell: cat /etc/passwd
+      register: groups
+
     - name: Create group docker
       group:
         name: docker
         state: present
-      when: "'docker' in groups"
+      when: groups.stdout.find('docker') != -1
+      ignore_errors: yes
 
+      
     - name: Add user to group
       user:
         name: $(USER)
+        shell: /bin/bash
         groups: docker
         append: yes
+      when: groups.stdout.find('docker') != -1
+      ignore_errors: yes
+
 
   handlers:
     - name: restart docker
