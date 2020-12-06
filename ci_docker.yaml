@@ -45,9 +45,11 @@
 
     - name: Add user to group
       user:
-        name: $(USER)
+        name: "{{ ansible_facts['env']['SUDO_USER'] }}"
         groups: docker
         append: yes
+      notify:
+        - restart_groups
 
   handlers:
     - name: restart docker
@@ -55,3 +57,6 @@
         name: docker 
         state: restarted
 
+    - name: restart_groups
+      shell:
+        cmd: "newgrp docker"
