@@ -4,15 +4,15 @@
     cmd: apt update -y
   tags:
     - update
-
-      #- name: Ser timezone
-      #  community.general.timezone:
-      #    name: Europe/Minsk
-      #  tags:
-      #    - timezone
+  
+# - name: Set timezone
+#   community.general.timezone:
+#     name: Europe/Minsk
+#   tags:
+#     - timezone
 
 - name: Install packages
-  sudo: yes
+  # sudo: yes
   apt:
     name: "{{ apt_packages }}"
     state: latest
@@ -30,8 +30,11 @@
     - add_user
 
 - name: Add user www to sudoers
+  # sudo: yes
+  # become: yes
+  # become_user: root
   shell:
-    cmd: echo " "{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ "{{ sudo_user }}"
+    cmd: echo " "{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/{{ sudo_user }}
   tags: 
     - add_user
 
@@ -55,7 +58,7 @@
   ignore_errors: yes
 
 - name: Add foldef for code
-  sudo: yes
+  # sudo: yes
   file: 
     path: ~/code
     state: directory
@@ -64,7 +67,7 @@
     - add_folder_code
 
 - name: Add foldef for jenkins
-  sudo: yes
+  # sudo: yes
   file: 
     path: ~/jenkins
     state: directory
@@ -85,11 +88,10 @@
   tags:
     - test
 
-- name: Debus messages
+- name: Debug messages
   when: alias.stdout.find('clear') != 1
   debug: msg="Alias already exist"
   tags:
     - test
 
-
-
+- meta: flush_handlers

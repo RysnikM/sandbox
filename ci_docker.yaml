@@ -36,7 +36,8 @@
         name: docker
         state: started
         enabled: yes
-
+      ignore_errors: yes 
+    
     - name: Create group docker
       group:
         name: docker
