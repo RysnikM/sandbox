@@ -2,8 +2,8 @@
 # - import_playbook: ci_docker.yaml
 
 # DEPLOY ROLS
-- hosts: localhost
-  gather_facts: no
+- hosts: server001
+  gather_facts: yes
   become: true
   pre_tasks:
     - name: check host

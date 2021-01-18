@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: 80.89.230.245
   gather_facts: true
   become: true
   tasks:
@@ -18,7 +18,7 @@
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-    - name: aggiungi repository docker
+    - name: Adding repository docker
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present
@@ -55,6 +55,8 @@
       notify:
         - restart_groups
         - restart_user
+      tags:
+        - add_user_to_group
 
   handlers:
     - name: restart docker

@@ -1,7 +1,13 @@
 ---
+- name: facts
+  debug: 
+    msg: "{{ansible_distribution}}"  
+  tags: 
+    - facts
+
 - name: Update packages
   shell:
-    cmd: apt update -y
+    cmd: apt-get update -y
   tags:
     - update
   
@@ -12,41 +18,94 @@
 #     - timezone
 
 - name: Install packages
-  # sudo: yes
   apt:
-    name: "{{ apt_packages }}"
+    name: "{{item}}"
     state: latest
     update_cache: yes
+  loop:
+    - tmux
+    - vim 
+    - mosh 
+    - htop 
+    - git 
+    - curl 
+    - wget 
+    - unzip 
+    - zip
+    - tree
+    - default-jre
+    - default-jdk
   tags:
     - install_packages 
+
+
+
+
 
 - name: Add the sudo user
   user:
     name: "{{ sudo_user }}"
     shell: /bin/bash
     password: "{{s_pass}}"
+    comment: Dev user
     groups: sudo
   tags: 
     - add_user
 
-- name: Add user www to sudoers
-  # sudo: yes
-  # become: yes
-  # become_user: root
-  shell:
-    cmd: echo " "{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/{{ sudo_user }}
+- name: Make sure "sudo" is installed
+  package:
+    name: sudo
+    state: present
+    update_cache: yes
   tags: 
     - add_user
 
+- name: Add user to sudoers
+  shell:
+    cmd: echo " "{{ sudo_user }}"  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/{{ sudo_user }}
+  # when: ansible_distribution != 'Debian'
+  tags: 
+    - add_user
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: "{{ sudo_user }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  tags:
+    - add_user
+    - add_ssh_key
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - name: Find groups
   shell: cat /etc/passwd
-  register: groups
+  register: gr
+  tags:
+    - check_groups
+
+- debug: 
+    msg: "{{ gr }}"
+  tags:
+    - check_groups
 
 - name: Create group docker
   group:
     name: docker
     state: present
-  when: groups.stdout.find('docker') != -1
+  when: gr.stdout.find('docker') != -1
   ignore_errors: yes
 
 - name: Add user to group
@@ -54,7 +113,7 @@
     name: "{{ sudo_user }}"
     groups: docker
     append: yes
-  when: groups.stdout.find('docker') != -1
+  when: gr.stdout.find('docker') != -1
   ignore_errors: yes
 
 - name: Add foldef for code

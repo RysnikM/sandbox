@@ -3,6 +3,6 @@ server001:
   vars:
     ansible_user: root
   hosts:
-    fandock:
-      ansible_host: localhost
+    my_debian:
+      ansible_host: 80.89.230.245
       
