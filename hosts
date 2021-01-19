@@ -2,12 +2,12 @@
 localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
 
 [my_debian]
-80.89.230.245 ansible_python_interpreter=/usr/bin/python3
-80.89.230.215 ansible_python_interpreter=/usr/bin/python3
+s2/2 ansible_host=80.89.230.245 ansible_python_interpreter=/usr/bin/python3 ansible_port=202
+s4/3 ansible_host=80.89.230.215 ansible_python_interpreter=/usr/bin/python3 ansible_port=202
 
 [my_ubuntu]
-185.231.71.153
-185.92.149.191
+185.231.71.153 ansible_port=202
+185.92.149.191 ansible_port=202
 
 [p_tdf]
 128.65.54.166 ansible_user=admin

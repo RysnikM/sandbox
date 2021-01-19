@@ -1,0 +1,49 @@
+---
+- hosts: all
+  gather_facts: False
+  # become: True
+  tasks:
+
+    - name: Add issue file
+      become: yes
+      copy:
+        src: issue
+        dest: /etc/issue
+      tags:
+        - copy_issue
+
+    - name: edit welcom message
+      become: True
+      shell:
+        cmd: "> /etc/motd"
+      tags:
+        - w_mess
+
+    - name: SSH security
+      become: yes
+      lineinfile: 
+        dest: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '.PasswordAuthentication.', line: 'PasswordAuthentication no' }
+        - { regexp: '.Port.', line: 'Port 202' }
+        - { regexp: '.AddressFamily.', line: 'AddressFamily inet' }
+        - { regexp: '.PermitEmptyPasswords.', line: 'PermitEmptyPasswords no' }
+        - { regexp: '.AlowUsers.', line: 'AllowUsers mvlab mrysnik' }
+        - { regexp: '.PermitRootLogin.', line: 'PermitRootLogin no' }
+        - { regexp: '.ClientAliveInterval.', line: 'ClientAliveInterval 300' }
+        - { regexp: '.ClientAliveCountMax.', line: 'ClientAliveCountMax 0' }
+        - { regexp: '.IgnoreRhosts.', line: 'IgnoreRhosts yes' }
+        - { regexp: '.Banner.', line: 'Banner /etc/issue' }
+        - { regexp: '.LogLevel.', line: 'LogLevel INFO' }
+      # notify:
+        # - restart_ssh
+      tags:
+        - sshd1
+
+  # handlers:
+  #   - name: restart_ssh
+  #     service: 
+  #       name: ssh 
+  #       state: restarted

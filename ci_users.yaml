@@ -1,0 +1,87 @@
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  vars:
+      user_name: mvlab
+      user_pass: $6$5PJtuKN86SaOuCzi$dA4XgU2KkW2F7YnbeT1e8Z..rZX329IOTYQucVhXMVPlryv9r9Q9D2XFB9ETIXEcwYarrlL6i3a3/ZeMVD6eN/
+  tasks:
+
+    - name: print user
+      debug: 
+        msg: "{{ user_name }}"  
+      tags: 
+        - print
+
+    - name: Make sure "sudo" is installed
+      package:
+        name: sudo
+        state: present
+        update_cache: yes
+      tags: 
+        - add_sudo
+
+    - name: add user
+      user: 
+        name: "{{ user_name }}"  
+        # password: "{{ user_pass }}"
+        comment: Manage by mvlab
+        state: present
+        shell: /bin/bash
+        groups: sudo
+      tags:
+        - add
+
+    # - name: Set authorized key token from file
+    #   authorized_key:
+    #     user: "{{ user_name }}"
+    #     state: present
+    #     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    #   tags:
+    #     - add_ssh_key
+
+    - name: Set up multiple authorized keys
+      authorized_key:
+        user: "{{ user_name }}"
+        state: present
+        key: '{{ item }}'
+      with_file:
+      - ~/.ssh/id_rsa.pub
+      - ./key/alex_id_rsa.pub
+      - ./key/mikalai_id_rsa.pub
+      tags:
+        - add_ssh_key
+
+    - name: check sudo
+      package:
+        name: sudo
+        state: present
+      tags:
+        -sudo_check
+
+    - name: adding user to sudoers
+      lineinfile: 
+        dest: /etc/sudoers 
+        line: "{{ user_name }} ALL=(ALL) NOPASSWD: ALL" 
+        validate: 'visudo -cf %s'
+      tags:
+        - nopass
+
+    - name: check user 
+      shell: 
+        cmd: sudo -l -U "{{ user_name }}"
+      register: check_user_shell
+      tags:
+        - check_user
+
+    - debug:
+        msg: "{{ check_user_shell }}"
+      tags:
+        - check_user
+
+    - name: Removing user {{ user_name }}
+      user:
+        name: "{{ user_name }}"
+        state: absent 
+      tags:
+        - rm_user

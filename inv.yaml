@@ -1,8 +1,38 @@
 ---
-server001:
+my_serv:
   vars:
-    ansible_user: root
-  hosts:
+  children:
+
     my_debian:
-      ansible_host: 80.89.230.245
-      
+      hosts:
+        s2/2:
+          ansible_host: 80.89.230.245
+          # ansible_user: www
+          ansible_port: 202
+          ansible_python_interpreter: /usr/bin/python3
+        s4/4:
+          ansible_host: 80.89.230.215     
+          ansible_port: 202
+          ansible_python_interpreter: /usr/bin/python3
+
+    my_ubuntu:
+      hosts:
+        u1:
+          ansible_host: 185.231.71.153
+          # ansible_port: 202
+          # ansible_python_interpreter: /usr/bin/python3
+        u2:
+          ansible_host: 185.92.149.191
+          ansible_port: 202
+          ansible_python_interpreter: /usr/bin/python3
+          
+
+proj_serv:
+  children:
+    main_serv:
+      hosts:
+        main:
+          ansible_host: 128.65.54.166
+          ansible_user: admin
+          ansible_port: 22
+          ansible_python_interpreter: /usr/bin/python3
