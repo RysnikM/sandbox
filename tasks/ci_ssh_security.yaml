@@ -37,6 +37,8 @@
         - { regexp: '.IgnoreRhosts.', line: 'IgnoreRhosts yes' }
         - { regexp: '.Banner.', line: 'Banner /etc/issue' }
         - { regexp: '.LogLevel.', line: 'LogLevel INFO' }
+        - { regexp: '.Protocol.', line: 'Protocol 2' }
+
       # notify:
         # - restart_ssh
       tags:
