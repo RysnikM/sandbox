@@ -19,7 +19,7 @@ my_serv:
       hosts:
         u1:
           ansible_host: 185.231.71.153
-          # ansible_port: 202
+          # ansible_port: 202 
           # ansible_python_interpreter: /usr/bin/python3
         u2:
           ansible_host: 185.92.149.191
@@ -32,16 +32,15 @@ my_tools_server:
     redmine:
       ansible_host: 92.119.115.101
       ansible_python_interpreter: /usr/bin/python3
+      ansible_port: 202
 
 
           
 
 proj_serv:
-  children:
-    main_serv:
-      hosts:
-        main:
-          ansible_host: 128.65.54.166
-          ansible_user: admin
-          ansible_port: 22
-          ansible_python_interpreter: /usr/bin/python3
+  hosts:
+    tdf:
+      ansible_host: 128.65.54.166
+      ansible_user: admin
+      ansible_port: 202
+      # ansible_python_interpreter: /usr/bin/python3
