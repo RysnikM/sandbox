@@ -4,7 +4,7 @@
   become: True
   vars:
       user_name: mvlab
-      user_pass: $6$5PJtuKN86SaOuCzi$dA4XgU2KkW2F7YnbeT1e8Z..rZX329IOTYQucVhXMVPlryv9r9Q9D2XFB9ETIXEcwYarrlL6i3a3/ZeMVD6eN/
+      # user_pass: $6$5PJtuKN86SaOuCzi$dA4XgU2KkW2F7YnbeT1e8Z..rZX329IOTYQucVhXMVPlryv9r9Q9D2XFB9ETIXEcwYarrlL6i3a3/ZeMVD6eN/
   tasks:
 
     - name: print user

@@ -1,0 +1,65 @@
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  tasks:
+
+    - name: Update packages
+      shell:
+        cmd: apt-get update -y
+      tags:
+        - update
+        
+    - name: Install packages
+      apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      loop:
+        - tmux
+        - vim 
+        - mosh 
+        - htop 
+        - git 
+        - curl 
+        - wget 
+        - unzip 
+        - zip
+        - tree
+        - default-jre
+        - default-jdk
+        - dstst
+      tags:
+        - install 
+
+    - name: set timezone to Minsk/Euro
+      timezone:
+        name: Europe/Minsk
+      tags:
+        - time
+
+
+    - name: Find alias
+      shell: cat ~/.bashrc
+      register: alias
+      tags: 
+        - alias
+
+    - name: Add any alias
+      shell:
+        cmd: echo "alias cls='clear'" >> ~/.bashrc
+      when: alias.stdout.find('clear') != -1
+      tags:
+        - alias
+
+    # - name: Add foldef for jenkins
+    #   file: 
+    #     path: ~/jenkins
+    #     state: directory
+    #     owner: "{{ sudo_user }}"
+    #   tags:
+    #     - jenkins_add_folder
+
+
+
+      
