@@ -19,8 +19,8 @@ my_serv:
       hosts:
         u1:
           ansible_host: 185.231.71.153
-          # ansible_port: 202 
-          # ansible_python_interpreter: /usr/bin/python3
+          ansible_port: 202 
+          ansible_python_interpreter: /usr/bin/python3
         u2:
           ansible_host: 185.92.149.191
           ansible_port: 202
@@ -41,6 +41,6 @@ proj_serv:
   hosts:
     tdf:
       ansible_host: 128.65.54.166
-      ansible_user: admin
+      ansible_user: mvlab
       ansible_port: 202
       # ansible_python_interpreter: /usr/bin/python3
