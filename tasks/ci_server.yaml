@@ -28,7 +28,6 @@
         - tree
         - default-jre
         - default-jdk
-        - dstst
       tags:
         - install 
 

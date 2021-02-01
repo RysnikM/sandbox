@@ -49,6 +49,7 @@
       - ~/.ssh/id_rsa.pub
       - ./key/alex_id_rsa.pub
       - ./key/mikalai_id_rsa.pub
+      - ./key/roman_id_rsa.pub
       tags:
         - add_ssh_key
 

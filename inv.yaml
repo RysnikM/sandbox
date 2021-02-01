@@ -13,6 +13,9 @@ my_serv:
         s4/4:
           ansible_host: 80.89.230.215     
           ansible_port: 202
+        s001:
+          ansible_host: 95.215.204.182
+          ansible_port: 202
           ansible_python_interpreter: /usr/bin/python3
 
     my_ubuntu:
