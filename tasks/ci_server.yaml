@@ -28,6 +28,7 @@
         - tree
         - default-jre
         - default-jdk
+        # - nginx
       tags:
         - install 
 
@@ -36,7 +37,6 @@
         name: Europe/Minsk
       tags:
         - time
-
 
     - name: Find alias
       shell: cat ~/.bashrc
